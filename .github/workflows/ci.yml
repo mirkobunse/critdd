@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches:    
+      - main
+
+jobs:
+
+  # take out unit tests
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+        - "3.10"
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -e .[tests]
+    - name: Test with unittest
+      run: python -m unittest
+
+  # build and push documentation to gh-pages
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build documentation
+      uses: ammaraskar/sphinx-action@master
+      with:
+        pre-build-command: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .[docs]
+          sphinx-apidoc --force --output-dir docs/source qunfold
+        docs-folder: "docs/"
+    - name: Publish documentation
+      run: |
+        git clone ${{ github.server_url }}/${{ github.repository }}.git --branch gh-pages --single-branch __gh-pages/
+        cp -r docs/build/html/* __gh-pages/
+        cd __gh-pages/
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -am "Documentation based on ${{ github.sha }}" || true
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        branch: gh-pages
+        directory: __gh-pages/
+        github_token: ${{ secrets.GITHUB_TOKEN }}

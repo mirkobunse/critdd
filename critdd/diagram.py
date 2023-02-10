@@ -6,31 +6,6 @@ from scipy import stats
 from .stats import friedman
 from . import tikz
 
-def _pairwise_tests(X):
-    k = X.shape[1] # number of treatments
-    P = np.ones((k, k)) * np.nan
-    for i in range(1, k):
-        for j in range(i):
-            P[i,j] = stats.wilcoxon(X[:,i], X[:,j], method="approx").pvalue
-    return P
-
-def _adjust_pairwise_tests(P, adjustment):
-    ij_finite = np.argwhere(np.isfinite(P))
-    p = np.array([ P[tuple(ij)] for ij in ij_finite ]) # flat array of finite elements
-    sortperm = np.argsort(p)
-    p_ = p[sortperm] # sorted p values
-    if adjustment == "holm":
-        p_ = np.maximum.accumulate(p_ * np.arange(len(p_), 0, -1))
-    elif adjustment == "bonferroni":
-        p_ *= len(p_)
-    else:
-        raise ValueError("adjustment must be either \"holm\" or \"bonferroni\"")
-    p[sortperm] = p_ # restore the original order
-    P = np.ones_like(P) * np.nan
-    for ((i, j), p_ij) in zip(ij_finite, p):
-        P[i,j] = p_ij
-    return P
-
 class Diagram(): # TODO extend to an arbitrary number of *Xs
     """A critical difference diagram."""
     def __init__(self, X, *, treatment_names=None, maximize_outcome=False):
@@ -65,15 +40,44 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
             return names
         return cliques
 
-    def to_str(self, alpha=.05, adjustment="holm"):
+    def to_str(self, alpha=.05, adjustment="holm", **kwargs):
         return tikz.to_str(
             self.average_ranks,
-            self.get_cliques(alpha, adjustment)
+            self.get_cliques(alpha, adjustment),
+            self.treatment_names,
+            **kwargs
         )
 
-    def to_file(self, path, alpha=.05, adjustment="holm"):
+    def to_file(self, path, alpha=.05, adjustment="holm", **kwargs):
         return tikz.to_file(
             path,
             self.average_ranks,
-            self.get_cliques(alpha, adjustment)
+            self.get_cliques(alpha, adjustment),
+            self.treatment_names,
+            **kwargs
         )
+
+def _pairwise_tests(X):
+    k = X.shape[1] # number of treatments
+    P = np.ones((k, k)) * np.nan
+    for i in range(1, k):
+        for j in range(i):
+            P[i,j] = stats.wilcoxon(X[:,i], X[:,j], method="approx").pvalue
+    return P
+
+def _adjust_pairwise_tests(P, adjustment):
+    ij_finite = np.argwhere(np.isfinite(P))
+    p = np.array([ P[tuple(ij)] for ij in ij_finite ]) # flat array of finite elements
+    sortperm = np.argsort(p)
+    p_ = p[sortperm] # sorted p values
+    if adjustment == "holm":
+        p_ = np.maximum.accumulate(p_ * np.arange(len(p_), 0, -1))
+    elif adjustment == "bonferroni":
+        p_ *= len(p_)
+    else:
+        raise ValueError("adjustment must be either \"holm\" or \"bonferroni\"")
+    p[sortperm] = p_ # restore the original order
+    P = np.ones_like(P) * np.nan
+    for ((i, j), p_ij) in zip(ij_finite, p):
+        P[i,j] = p_ij
+    return P

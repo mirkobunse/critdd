@@ -30,8 +30,7 @@ class TestReadMe(TestCase):
     output_path = "__example__.tex"
     if os.path.exists(output_path):
       os.remove(output_path) # make sure the file does not exist already
-    diagram.to_file(output_path)
+    diagram.to_file(output_path, title="critdd", reverse_x=True)
     self.assertTrue(os.path.exists(output_path))
     with open(output_path, "r") as f: # print the file contents
       print("\n"+"-"*32, f.read(), "-"*32+"\n", sep="\n")
-    os.remove(output_path) # clean up

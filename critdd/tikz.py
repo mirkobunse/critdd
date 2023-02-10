@@ -1,21 +1,26 @@
 """A module for the Tikz export."""
 
 import numpy as np
-import os, re
+import os, re, subprocess
 
 def to_file(path, average_ranks, groups, treatment_names, **kwargs):
     """Store the Tikz code in a file."""
-    tikz_str = to_str(average_ranks, groups, treatment_names, **kwargs)
     root, ext = os.path.splitext(path)
-    if ext in [ ".tex", ".tikz" ]:
-        with open(path, "w") as f:
-            f.write(tikz_str) # store the Tikz code in a .tex or .tikz file
-    elif ext in [ ".pdf", ".svg", ".png" ]:
-        raise NotImplementedError(f"{ext} export is not yet implemented")
-    else:
+    if ext not in [ ".tex", ".tikz", ".pdf", ".svg", ".png" ]:
         raise ValueError("Unknown file path extension")
+    if ext in [ ".pdf", ".svg", ".png" ]:
+        kwargs["as_document"] = True # export an entire document, not only a tikzpicture
+        path = root + ".tex"
+    with open(path, "w") as f: # store the Tikz code in a .tex or .tikz file
+        f.write(to_str(average_ranks, groups, treatment_names, **kwargs))
+    if ext in [ ".tex", ".tikz" ]:
+        return None # we are done here
+    pdflatex = subprocess.Popen(["pdflatex", path], stdout=subprocess.PIPE)
+    (out, err) = pdflatex.communicate() # convert to PDF
+    if ext in [ ".svg", ".png" ]:
+        raise NotImplementedError(f"{ext} export is not yet implemented")
 
-def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=False):
+def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=False, as_document=False):
     """Return a string with Tikz code."""
     tikzpicture_options = [ # general styling
         "treatment line/.style={semithick, rounded corners=1pt}",
@@ -69,17 +74,31 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
             np.max(average_ranks[groups[i]]),
             1.5 * (i+1) / (len(groups)+1)
         ))
-    return _tikzpicture(_axis(*commands, options=axis_options), options=tikzpicture_options)
+    tikz_str = _tikzpicture(
+        _axis(*commands, options=axis_options),
+        options = tikzpicture_options
+    )
+    if as_document:
+        tikz_str = _document(tikz_str)
+    return tikz_str
 
 def _indent(content):
     return re.sub("^", "  ", content, flags=re.MULTILINE)
 def _environment(name, *contents, options=[]):
+    options_str = ""
+    if len(options) > 0:
+        options_str = "[\n" + _indent(",\n".join(options)) + ",\n]\n"
     return "\n".join([
-        f"\\begin{{{name}}}[",
-        _indent(",\n".join(options)) + ",",
-        "]\n",
+        f"\\begin{{{name}}}" + options_str,
         *contents,
         f"\n\\end{{{name}}}"
+    ])
+def _document(*contents):
+    return "\n".join([
+        "\\documentclass[tikz,margin=.1in]{standalone}",
+        "\\usepackage{pgfplots,lmodern}",
+        "\\pgfplotsset{compat=newest}\n",
+        _environment("document", *contents)
     ])
 def _tikzpicture(*contents, options=[]):
     return _environment("tikzpicture", *contents, options=options)

@@ -79,10 +79,10 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
         """Store this diagram in a file.
 
         Note:
-            Currently, only storing Tikz code in a ".tex" file or ".tikz" file is supported.
+            Storing Tikz code in a ".png" file or ".svg" file is not yet supported.
 
         Args:
-            path: The file path where this diagram is to be stored.
+            path: The file path where this diagram is to be stored. Has to be ending on ".tex", ".tikz", ".pdf", ".png", or ".svg".
             alpha (optional): The threshold for rejecting a p value. Defaults to 0.05.
             adjustment (optional): The multiple testing adjustment. Defaults to "holm". Another possible value is "bonferroni".
             title (optional): The title of this diagram. Defaults to None.

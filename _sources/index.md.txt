@@ -2,6 +2,7 @@
 :hidden:
 
 self
+manual
 api
 developer-guide
 ```
@@ -20,6 +21,11 @@ Critical difference (CD) diagrams are a powerful tool to compare outcomes of mul
 
 <img alt="2d_example.svg" src="2d_example.svg" width="480">
 
+```{note}
+
+2D diagrams are currently under development.
+```
+
 
 ## Installation
 
@@ -33,5 +39,28 @@ pip install 'critdd @ git+https://github.com/mirkobunse/critdd'
 Basically, you use this package as follows:
 
 ```python
-from critdd import TODO
+from critdd import Diagram
+import pandas as pd
+
+# download example data
+_URL = "https://raw.githubusercontent.com/hfawaz/cd-diagram/master/example.csv"
+df = pd.read_csv(_URL).pivot(
+    index = "dataset_name",
+    columns = "classifier_name",
+    values = "accuracy"
+)
+
+# create a CD diagram from the Pandas DataFrame
+diagram = Diagram(
+    df.to_numpy(),
+    treatment_names = df.columns,
+    maximize_outcome = True
+)
+
+# inspect average ranks and groups of statistically indistinguishable treatments
+diagram.average_ranks # the average rank of each treatment
+diagram.get_groups(alpha=.05, adjustment="holm")
+
+# export the diagram to a file
+diagram.to_file("example.tex", title="critdd", reverse_x=True)
 ```

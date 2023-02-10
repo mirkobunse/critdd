@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual &mdash; critdd 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Quickstart" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            critdd
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#reading-a-cd-diagram">Reading a CD diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hypothesis-testing">Hypothesis testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-testing">Multiple testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cautions">Cautions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#citing">Citing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer-guide.html">Developer guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">critdd</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Manual</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/manual.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="manual">
+<h1>Manual<a class="headerlink" href="#manual" title="Permalink to this heading"></a></h1>
+<p>This manual provides you with more background information on CD diagrams.</p>
+<div class="section" id="reading-a-cd-diagram">
+<h2>Reading a CD diagram<a class="headerlink" href="#reading-a-cd-diagram" title="Permalink to this heading"></a></h2>
+<p>Let’s take a look at the treatments <code class="docutils literal notranslate"><span class="pre">clf1</span></code> to <code class="docutils literal notranslate"><span class="pre">clf5</span></code>. Their position represents their mean ranks across all outcomes of the observations, where low ranks indicate that a treatment wins more often than its competitors with higher ranks. Two or more treatments are connected with each other if we can not tell their outcomes apart, in the sense of statistical significance. For the above example, we can not tell from the data whether <code class="docutils literal notranslate"><span class="pre">clf3</span></code> and <code class="docutils literal notranslate"><span class="pre">clf5</span></code> are actually different from each other. We can tell, however, that both of them are different from all of the other treatments. This example above is adapted from <a class="reference external" href="https://github.com/hfawaz/cd-diagram">github.com/hfawaz/cd-diagram</a>.</p>
+<a class="reference internal image-reference" href="_images/example.svg"><img alt="example.svg" src="_images/example.svg" width="480" /></a>
+</div>
+<div class="section" id="hypothesis-testing">
+<h2>Hypothesis testing<a class="headerlink" href="#hypothesis-testing" title="Permalink to this heading"></a></h2>
+<p>A diagram like the one above concisely represents multiple hypothesis tests that are conducted over the observed outcomes. Before anything is plotted at all, the <em>Friedman test</em> tells us whether there are significant differences at all. If this test fails, we have not sufficient data to tell any of the treatments apart and we must abort. If, however, the test sucessfully rejects this possibility we can proceed with the post-hoc analysis. In this second step, a <em>Wilcoxon signed-rank test</em> tells us whether each pair of treatments exhibits a significant difference.</p>
+</div>
+<div class="section" id="multiple-testing">
+<h2>Multiple testing<a class="headerlink" href="#multiple-testing" title="Permalink to this heading"></a></h2>
+<p>Since we are testing multiple hypotheses, we must <em>adjust</em> the Wilcoxon test with Holm’s method or with Bonferroni’s method. For each group of treatments which we can not distinguish from the Holm-adjusted (or Bonferroni-adjusted) Wilcoxon test, we add a thick line to the diagram.</p>
+<p>Whether we choose Holm’s method or Bonferroni’s method for the adjustment depends on our personal requirements. Holm’s method has the advantage of a greater statistical power than Bonferroni’s method, i.e., this adjustment is capable of rejecting more null hypotheses that indeed should be rejected. However, its disadvantage is that the rejection of each null hypothesis depends on the outcome of other null hypotheses. If this property is not desired, one should instead use Bonferroni’s method, which ensures that each pair-wise hypothesis test is independent from all others.</p>
+</div>
+<div class="section" id="cautions">
+<h2>Cautions<a class="headerlink" href="#cautions" title="Permalink to this heading"></a></h2>
+<p>The hypothesis tests underneath the CD diagram do not account for variances of the outcomes. It is therefore important that these outcomes are <em>reliable</em> in the sense that each of them is obtained from a sufficiently large sample. Ideally, they come from a cross validation or from a repeated stratified split. Moreover, all treatments must have been evaluated on the same set of observations.</p>
+<p>The adjustments by Holm and Bonferroni can lead to different indistinguishable groups. For more information, see the <a class="reference internal" href="#multiple-testing"><span class="std std-doc">Multiple testing</span></a> section above.</p>
+</div>
+<div class="section" id="citing">
+<h2>Citing<a class="headerlink" href="#citing" title="Permalink to this heading"></a></h2>
+<p>CD diagrams have originally been proposed in the following article:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">demsar2006statistical</span><span class="p">,</span>
+  <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Statistical</span> <span class="n">comparisons</span> <span class="n">of</span> <span class="n">classifiers</span> <span class="n">over</span> <span class="n">multiple</span> <span class="n">data</span> <span class="n">sets</span><span class="p">},</span>
+  <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Dem</span><span class="p">{</span>\<span class="n">v</span><span class="p">{</span><span class="n">s</span><span class="p">}}</span><span class="n">ar</span><span class="p">,</span> <span class="n">Janez</span><span class="p">},</span>
+  <span class="n">journal</span><span class="o">=</span><span class="p">{</span><span class="n">The</span> <span class="n">Journal</span> <span class="n">of</span> <span class="n">Machine</span> <span class="n">learning</span> <span class="n">research</span><span class="p">},</span>
+  <span class="n">volume</span><span class="o">=</span><span class="p">{</span><span class="mi">7</span><span class="p">},</span>
+  <span class="n">number</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span>
+  <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="o">--</span><span class="mi">30</span><span class="p">},</span>
+  <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2006</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>However, the above article favors Nemenyi’s test for the post-hoc analysis.
+It has later been argued that Wilcoxon’s signed rank test (or the sign test)
+are more appropriate for the post-hoc assessment of the pairwise differences:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@article{benavoli2016should,
+  title={Should we really use post-hoc tests based on mean-ranks?},
+  author={Benavoli, Alessio and Corani, Giorgio and Mangili, Francesca},
+  journal={The Journal of Machine Learning Research},
+  volume={17},
+  number={1},
+  pages={152--161},
+  year={2016}
+}
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

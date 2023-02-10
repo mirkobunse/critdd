@@ -1,3 +1,6 @@
 # API
 
-TODO
+```{eval-rst}
+.. autoclass:: critdd.Diagram
+   :members:
+```

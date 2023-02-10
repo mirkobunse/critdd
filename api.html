@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Developer guide" href="developer-guide.html" />
-    <link rel="prev" title="Quickstart" href="index.html" /> 
+    <link rel="prev" title="Manual" href="manual.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,7 +44,16 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Quickstart</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual.html">Manual</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#critdd.Diagram"><code class="docutils literal notranslate"><span class="pre">Diagram</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#critdd.Diagram.get_groups"><code class="docutils literal notranslate"><span class="pre">Diagram.get_groups()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#critdd.Diagram.to_file"><code class="docutils literal notranslate"><span class="pre">Diagram.to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#critdd.Diagram.to_str"><code class="docutils literal notranslate"><span class="pre">Diagram.to_str()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="developer-guide.html">Developer guide</a></li>
 </ul>
 
@@ -74,14 +83,86 @@
              
   <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h1>
-<p>TODO</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="critdd.Diagram">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">critdd.</span></span><span class="sig-name descname"><span class="pre">Diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">treatment_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximize_outcome</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagram" title="Permalink to this definition"></a></dt>
+<dd><p>A critical difference diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – An <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">k)</span></code>-shaped matrix of observations, where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of observations and <code class="docutils literal notranslate"><span class="pre">k</span></code> is the number of treatments.</p></li>
+<li><p><strong>treatment_names</strong> (<em>optional</em>) – The names of the <code class="docutils literal notranslate"><span class="pre">k</span></code> treatments. Defaults to None.</p></li>
+<li><p><strong>maximize_outcome</strong> (<em>optional</em>) – Whether the ranks represent a maximization (True) or a minimization (False) of the outcome. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="critdd.Diagram.get_groups">
+<span class="sig-name descname"><span class="pre">get_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagram.get_groups" title="Permalink to this definition"></a></dt>
+<dd><p>Get the groups of indistinguishable treatments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>optional</em>) – The threshold for rejecting a p value. Defaults to 0.05.</p></li>
+<li><p><strong>adjustment</strong> (<em>optional</em>) – The multiple testing adjustment. Defaults to “holm”. Another possible value is “bonferroni”.</p></li>
+<li><p><strong>return_names</strong> (<em>optional</em>) – Whether to represent the treatments in the groups by their names (True) or by their indices (False). Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of statistically indistinguishable groups.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="critdd.Diagram.to_file">
+<span class="sig-name descname"><span class="pre">to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagram.to_file" title="Permalink to this definition"></a></dt>
+<dd><p>Store this diagram in a file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, only storing Tikz code in a “.tex” file or “.tikz” file is supported.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – The file path where this diagram is to be stored.</p></li>
+<li><p><strong>alpha</strong> (<em>optional</em>) – The threshold for rejecting a p value. Defaults to 0.05.</p></li>
+<li><p><strong>adjustment</strong> (<em>optional</em>) – The multiple testing adjustment. Defaults to “holm”. Another possible value is “bonferroni”.</p></li>
+<li><p><strong>title</strong> (<em>optional</em>) – The title of this diagram. Defaults to None.</p></li>
+<li><p><strong>reverse_x</strong> (<em>optional</em>) – Whether to reverse the x direction. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="critdd.Diagram.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagram.to_str" title="Permalink to this definition"></a></dt>
+<dd><p>Get a <code class="docutils literal notranslate"><span class="pre">str</span></code> object with the Tikz code for this diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>optional</em>) – The threshold for rejecting a p value. Defaults to 0.05.</p></li>
+<li><p><strong>adjustment</strong> (<em>optional</em>) – The multiple testing adjustment. Defaults to “holm”. Another possible value is “bonferroni”.</p></li>
+<li><p><strong>title</strong> (<em>optional</em>) – The title of this diagram. Defaults to None.</p></li>
+<li><p><strong>reverse_x</strong> (<em>optional</em>) – Whether to reverse the x direction. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">str</span></code> object with the Tikz code for this diagram.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="manual.html" class="btn btn-neutral float-left" title="Manual" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="developer-guide.html" class="btn btn-neutral float-right" title="Developer guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

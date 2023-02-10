@@ -3,9 +3,9 @@
 import numpy as np
 import os, re
 
-def to_file(path, average_ranks, cliques, treatment_names, **kwargs):
+def to_file(path, average_ranks, groups, treatment_names, **kwargs):
     """Store the Tikz code in a file."""
-    tikz_str = to_str(average_ranks, cliques, treatment_names, **kwargs)
+    tikz_str = to_str(average_ranks, groups, treatment_names, **kwargs)
     root, ext = os.path.splitext(path)
     if ext in [ ".tex", ".tikz" ]:
         with open(path, "w") as f:
@@ -15,12 +15,12 @@ def to_file(path, average_ranks, cliques, treatment_names, **kwargs):
     else:
         raise ValueError("Unknown file path extension")
 
-def to_str(average_ranks, cliques, treatment_names, *, title=None, reverse_x=False):
+def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=False):
     """Return a string with Tikz code."""
     tikzpicture_options = [ # general styling
         "treatment line/.style={semithick, rounded corners=1pt}",
         "treatment label/.style={font=\\small, fill=white, text=black, inner xsep=5pt, outer xsep=-5pt}",
-        "clique line/.style={ultra thick, line cap=round}",
+        "group line/.style={ultra thick, line cap=round}",
     ]
     k = len(average_ranks)
     changepoint = np.ceil(k/2)
@@ -63,11 +63,11 @@ def to_str(average_ranks, cliques, treatment_names, *, title=None, reverse_x=Fal
             ypos,
             reverse_x
         ))
-    for i in range(len(cliques)):
-        commands.append(_clique(
-            np.min(average_ranks[cliques[i]]),
-            np.max(average_ranks[cliques[i]]),
-            1.5 * (i+1) / (len(cliques)+1)
+    for i in range(len(groups)):
+        commands.append(_group(
+            np.min(average_ranks[groups[i]]),
+            np.max(average_ranks[groups[i]]),
+            1.5 * (i+1) / (len(groups)+1)
         ))
     return _tikzpicture(_axis(*commands, options=axis_options), options=tikzpicture_options)
 
@@ -88,5 +88,5 @@ def _axis(*contents, options=[]):
 def _treatment(label, rank, xpos, ypos, reverse_x):
     anchor = "west" if (int(xpos == 1) + int(reverse_x)) % 2 == 0 else "east"
     return f"\\draw[treatment line] (axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{label}}};"
-def _clique(minrank, maxrank, ypos):
-    return f"\\draw[clique line] (axis cs:{minrank}, {-ypos}) -- (axis cs:{maxrank}, {-ypos});"
+def _group(minrank, maxrank, ypos):
+    return f"\\draw[group line] (axis cs:{minrank}, {-ypos}) -- (axis cs:{maxrank}, {-ypos});"

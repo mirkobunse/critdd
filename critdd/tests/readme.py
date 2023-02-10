@@ -22,9 +22,9 @@ class TestReadMe(TestCase):
     # check the content of the diagram
     expected_ranks = np.array([4.2, 3.75, 1.5, 3.5, 2.])
     self.assertTrue(np.all(diagram.average_ranks - expected_ranks < 0.05))
-    cliques = diagram.get_cliques(return_names=True)
-    self.assertTrue(["clf1", "clf2", "clf4"] in cliques)
-    self.assertTrue(["clf3", "clf5"] in cliques)
+    groups = diagram.get_groups(return_names=True)
+    self.assertTrue(["clf1", "clf2", "clf4"] in groups)
+    self.assertTrue(["clf3", "clf5"] in groups)
 
     # check the tikz export
     output_path = "__example__.tex"

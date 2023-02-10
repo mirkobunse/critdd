@@ -40,8 +40,8 @@ def f_distributed(X, *, maximize_outcome=False):
     n_df_1 = k-1
     n_df_2 = (k-1)*(r.n-1)
     return FDistributedFriedmanResult(
-        statistic,
         _pvalue(stats.f(n_df_1, n_df_2), statistic, tail="right"),
+        statistic,
         r,
         n_df_1,
         n_df_2
@@ -56,8 +56,8 @@ def chi_square_distributed(X, *, maximize_outcome=False):
     statistic = 12*n/(k*(k+1)) * np.sum((average_ranks - (k+1)/2)**2)
     n_df = k-1
     return ChiSquareFriedmanResult(
-        statistic,
         _pvalue(stats.chi2(n_df), statistic, tail="right"),
+        statistic,
         n_df,
         average_ranks,
         n,

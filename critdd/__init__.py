@@ -1,5 +1,5 @@
 """critdd: critical difference diagrams with Python and Tikz."""
 
-from .friedman import (
+from .stats import (
     friedman,
 )

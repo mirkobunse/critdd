@@ -4,6 +4,7 @@ import networkx as nx
 import numpy as np
 from scipy import stats
 from .stats import friedman
+from . import tikz
 
 def _pairwise_tests(X):
     k = X.shape[1] # number of treatments
@@ -63,3 +64,16 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
                 names.append(list(self.treatment_names[c]))
             return names
         return cliques
+
+    def to_str(self, alpha=.05, adjustment="holm"):
+        return tikz.to_str(
+            self.average_ranks,
+            self.get_cliques(alpha, adjustment)
+        )
+
+    def to_file(self, path, alpha=.05, adjustment="holm"):
+        return tikz.to_file(
+            path,
+            self.average_ranks,
+            self.get_cliques(alpha, adjustment)
+        )

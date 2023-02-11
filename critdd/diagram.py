@@ -48,7 +48,19 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
         for ij in np.argwhere(np.logical_and(np.isfinite(P), P >= alpha)):
             G.add_edge(*ij)
         groups = list(nx.find_cliques(G)) # groups = maximal cliques
-        # TODO check for dominance?
+        r_min = np.empty(len(groups)) # minimum and maximum rank per group
+        r_max = np.empty(len(groups))
+        for i in range(len(groups)):
+            r_g = self.average_ranks[groups[i]]
+            r_min[i] = np.min(r_g)
+            r_max[i] = np.max(r_g)
+        is_maximal = np.empty(len(groups), bool)
+        for i in range(len(groups)):
+            is_maximal[i] = np.all(np.logical_and(
+                np.logical_or(r_min > r_min[i], r_max <= r_max[i]),
+                np.logical_or(r_min >= r_min[i], r_max < r_max[i])
+            ))
+        groups = [ g for (g, i) in zip(groups, is_maximal) if i ] # remove non-maximal groups
         if return_names:
             names = []
             for g in groups:

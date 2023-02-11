@@ -44,9 +44,7 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
         if self.r.pvalue >= alpha: # does the Friedman test fail to reject?
             return [ np.arange(len(self.average_ranks)) ] # all treatments in a single group
         P = _adjust_pairwise_tests(self.P, adjustment)
-        G = nx.Graph()
-        for ij in np.argwhere(np.logical_and(np.isfinite(P), P >= alpha)):
-            G.add_edge(*ij)
+        G = nx.Graph(np.logical_and(np.isfinite(P), P >= alpha))
         groups = list(nx.find_cliques(G)) # groups = maximal cliques
         r_min = np.empty(len(groups)) # minimum and maximum rank per group
         r_max = np.empty(len(groups))
@@ -113,7 +111,12 @@ def _pairwise_tests(X):
     P = np.ones((k, k)) * np.nan
     for i in range(1, k):
         for j in range(i):
-            P[i,j] = stats.wilcoxon(X[:,i], X[:,j], method="approx").pvalue
+            P[i,j] = stats.wilcoxon(
+                X[:,i],
+                X[:,j],
+                method = "exact",
+                zero_method = 'pratt'
+            ).pvalue
     return P
 
 def _adjust_pairwise_tests(P, adjustment):

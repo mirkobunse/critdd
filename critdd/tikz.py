@@ -24,7 +24,7 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
     """Return a string with Tikz code."""
     tikzpicture_options = [ # general styling
         "treatment line/.style={semithick, rounded corners=1pt}",
-        "treatment label/.style={font=\\small, fill=white, text=black, inner xsep=5pt, outer xsep=-5pt}",
+        "treatment label/.style={font=\\small, fill=white, text=black, inner xsep=3pt, outer xsep=-3pt}",
         "group line/.style={ultra thick, line cap=round}",
     ]
     k = len(average_ranks)
@@ -45,8 +45,14 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
         "axis line style={-}",
         "title style={yshift=\\baselineskip}",
     ]
-    if k <= 5:
+    if k <= 6:
         axis_options.append(f"xtick={{{','.join((np.arange(k)+1).astype(str))}}}")
+    elif k == 10: # [1,2.5,4,5.5,...,k] for k == 10
+        axis_options.append(f"xtick={{{','.join((np.arange(1,k+1,1.5)).astype(str))}}}")
+    elif k >= 13 and (k-1) % 3 == 0: # [1,4,7,...,k] for k >= 13
+        axis_options.append(f"xtick={{{','.join((np.arange(1,k+1,3)).astype(str))}}}")
+    elif k % 2 == 1: # [1,3,5,...,k] for k >= 7
+        axis_options.append(f"xtick={{{','.join((np.arange(1,k+1,2)).astype(str))}}}")
     if reverse_x:
         axis_options.append("x dir=reverse")
     if title is not None:

@@ -28,7 +28,7 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
         "group line/.style={ultra thick, line cap=round}",
     ]
     k = len(average_ranks)
-    changepoint = np.ceil(k/2)
+    changepoint = int(np.floor(k/2)) # index for breaking left and right treatments
     axis_options = [
         "clip=false",
         "axis x line=center",
@@ -38,7 +38,7 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
         f"ymin={-(changepoint+1.5)}",
         "ymax=0",
         "scale only axis",
-        f"height={changepoint+2}\\baselineskip",
+        f"height={changepoint+2}\\baselineskip", # ceil(k/2) + 1 extra \\baselikeskip
         "width=\\axisdefaultwidth",
         "ticklabel style={anchor=south, yshift=1.3*\\pgfkeysvalueof{/pgfplots/major tick length}, font=\\small}",
         "every tick/.style={yshift=.5*\\pgfkeysvalueof{/pgfplots/major tick length}}",
@@ -57,28 +57,43 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
         axis_options.append("x dir=reverse")
     if title is not None:
         axis_options.append(f"title={{{title}}}")
-    if not reverse_x and k % 2: # if k is odd
-        changepoint -= 1
-    changepoint -= 1
+    sortperm = np.argsort(average_ranks) # add treatments in their ranking order
+    is_high = np.empty(len(average_ranks), bool)
+    is_high[sortperm] = np.concatenate((
+        np.zeros(changepoint),
+        np.ones(k-changepoint),
+    ))
+    x_pos = np.ones(k) * np.min(average_ranks) -k/10
+    x_pos[is_high] = np.max(average_ranks) + k/10
+    y_pos = np.empty(len(average_ranks))
+    y_pos[sortperm] = np.concatenate((
+        2 + np.arange(changepoint) + (.5 if k % 2 else 0),
+        1 + np.arange(k-changepoint, 0, -1),
+    ))
+    anchors = np.array(["west", "east"])[(is_high if reverse_x else ~is_high).astype(int)]
+    y_group_pos = np.array([ np.min(y_pos[g]) for g in groups ]) * 2/3
+    y_group_order = np.argsort(y_group_pos)
+    for i in range(len(y_group_pos)-1):
+        if len(np.intersect1d(groups[y_group_order[i+1]], groups[y_group_order[i]])) > 0:
+            y_group_pos[y_group_order[i+1]] = np.maximum(
+                y_group_pos[y_group_order[i+1]],
+                y_group_pos[y_group_order[i]] + .2
+            ) # ensure a minimum distance between vertically adjacent, overlapping groups
     commands = []
-    for (i, j) in enumerate(np.argsort(average_ranks)): # add treatment commands
-        xpos = 1 if i < changepoint else k
-        if reverse_x:
-            ypos = 2 + (i if i < changepoint else (k - i - (1.5 if k % 2 else 1)))
-        else:
-            ypos = (.5 if k % 2 else .0) + (i + .5 if i < changepoint else k - i + (1 if k % 2 else 1.5))
+    for i in np.arange(k)[sortperm]:
         commands.append(_treatment(
-            treatment_names[j],
-            average_ranks[j],
-            xpos,
-            ypos,
+            treatment_names[i],
+            average_ranks[i],
+            x_pos[i],
+            y_pos[i],
+            anchors[i],
             reverse_x
         ))
     for i in range(len(groups)):
         commands.append(_group(
             np.min(average_ranks[groups[i]]),
             np.max(average_ranks[groups[i]]),
-            1.5 * (i+1) / (len(groups)+1)
+            y_group_pos[i]
         ))
     tikz_str = _tikzpicture(
         _axis(*commands, options=axis_options),
@@ -110,8 +125,7 @@ def _tikzpicture(*contents, options=[]):
     return _environment("tikzpicture", *contents, options=options)
 def _axis(*contents, options=[]):
     return _environment("axis", *contents, options=options)
-def _treatment(label, rank, xpos, ypos, reverse_x):
-    anchor = "west" if (int(xpos == 1) + int(reverse_x)) % 2 == 0 else "east"
+def _treatment(label, rank, xpos, ypos, anchor, reverse_x):
     return f"\\draw[treatment line] (axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{label}}};"
 def _group(minrank, maxrank, ypos):
     return f"\\draw[group line] (axis cs:{minrank}, {-ypos}) -- (axis cs:{maxrank}, {-ypos});"

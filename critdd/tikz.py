@@ -23,9 +23,9 @@ def to_file(path, average_ranks, groups, treatment_names, **kwargs):
 def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=False, as_document=False):
     """Return a string with Tikz code."""
     tikzpicture_options = [ # general styling
-        "treatment line/.style={semithick, rounded corners=1pt}",
-        "treatment label/.style={font=\\small, fill=white, text=black, inner xsep=3pt, outer xsep=-3pt}",
-        "group line/.style={ultra thick, line cap=round}",
+        "treatment line/.style={rounded corners=1.5pt, line cap=round, shorten >=1pt}",
+        "treatment label/.style={font=\\small}",
+        "group line/.style={ultra thick}",
     ]
     k = len(average_ranks)
     changepoint = int(np.floor(k/2)) # index for breaking left and right treatments
@@ -33,6 +33,7 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
         "clip=false",
         "axis x line=center",
         "axis y line=none",
+        "axis line style={line cap=round}",
         "xmin=1",
         f"xmax={k}",
         f"ymin={-(changepoint+1.5)}",
@@ -41,18 +42,24 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
         f"height={changepoint+2}\\baselineskip", # ceil(k/2) + 1 extra \\baselikeskip
         "width=\\axisdefaultwidth",
         "ticklabel style={anchor=south, yshift=1.3*\\pgfkeysvalueof{/pgfplots/major tick length}, font=\\small}",
-        "every tick/.style={yshift=.5*\\pgfkeysvalueof{/pgfplots/major tick length}}",
+        "every tick/.style={draw=black}",
+        "major tick style={yshift=.5*\\pgfkeysvalueof{/pgfplots/major tick length}}",
+        "minor tick style={yshift=.5*\\pgfkeysvalueof{/pgfplots/minor tick length}}",
         "axis line style={-}",
         "title style={yshift=\\baselineskip}",
     ]
     if k <= 6:
         axis_options.append(f"xtick={{{','.join((np.arange(k)+1).astype(str))}}}")
+        axis_options.append("minor x tick num=3")
     elif k == 10: # [1,2.5,4,5.5,...,k] for k == 10
         axis_options.append(f"xtick={{{','.join((np.arange(1,k+1,1.5)).astype(str))}}}")
-    elif k >= 13 and (k-1) % 3 == 0: # [1,4,7,...,k] for k >= 13
+        axis_options.append("minor x tick num=2")
+    elif k >= 10 and (k-1) % 3 == 0: # [1,4,7,...,k] for k >= 13
         axis_options.append(f"xtick={{{','.join((np.arange(1,k+1,3)).astype(str))}}}")
+        axis_options.append("minor x tick num=1")
     elif k % 2 == 1: # [1,3,5,...,k] for k >= 7
         axis_options.append(f"xtick={{{','.join((np.arange(1,k+1,2)).astype(str))}}}")
+        axis_options.append("minor x tick num=1")
     if reverse_x:
         axis_options.append("x dir=reverse")
     if title is not None:
@@ -63,8 +70,8 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
         np.zeros(changepoint),
         np.ones(k-changepoint),
     ))
-    x_pos = np.ones(k) * np.min(average_ranks) -k/10
-    x_pos[is_high] = np.max(average_ranks) + k/10
+    x_pos = np.ones(k) * np.min(average_ranks) -k/12
+    x_pos[is_high] = np.max(average_ranks) + k/12
     y_pos = np.empty(len(average_ranks))
     y_pos[sortperm] = np.concatenate((
         2 + np.arange(changepoint) + (.5 if k % 2 else 0),
@@ -126,6 +133,6 @@ def _tikzpicture(*contents, options=[]):
 def _axis(*contents, options=[]):
     return _environment("axis", *contents, options=options)
 def _treatment(label, rank, xpos, ypos, anchor, reverse_x):
-    return f"\\draw[treatment line] (axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{label}}};"
+    return f"\\draw[treatment line] ([yshift=-2pt] axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{label}}};"
 def _group(minrank, maxrank, ypos):
     return f"\\draw[group line] (axis cs:{minrank}, {-ypos}) -- (axis cs:{maxrank}, {-ypos});"

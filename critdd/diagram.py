@@ -72,8 +72,10 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
         Args:
             alpha (optional): The threshold for rejecting a p value. Defaults to 0.05.
             adjustment (optional): The multiple testing adjustment. Defaults to "holm". Another possible value is "bonferroni".
-            title (optional): The title of this diagram. Defaults to None.
             reverse_x (optional): Whether to reverse the x direction. Defaults to False.
+            as_document (optional): Whether to include a ``\\documentclass`` and a ``document`` environment. Defaults to False.
+            tikzpicture_options (optional): Options for the ``tikzpicture`` environment.
+            axis_options (optional): Options for the ``axis`` environment.
 
         Returns:
             A ``str`` object with the Tikz code for this diagram.
@@ -95,8 +97,10 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
             path: The file path where this diagram is to be stored. Has to be ending on ".tex", ".tikz", ".pdf", ".png", or ".svg".
             alpha (optional): The threshold for rejecting a p value. Defaults to 0.05.
             adjustment (optional): The multiple testing adjustment. Defaults to "holm". Another possible value is "bonferroni".
-            title (optional): The title of this diagram. Defaults to None.
             reverse_x (optional): Whether to reverse the x direction. Defaults to False.
+            as_document (optional): Whether to include a ``\\documentclass`` and a ``document`` environment. Defaults to False.
+            tikzpicture_options (optional): Options for the ``tikzpicture`` environment.
+            axis_options (optional): Options for the ``axis`` environment.
         """
         return tikz.to_file(
             path,

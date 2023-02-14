@@ -62,5 +62,11 @@ diagram.average_ranks # the average rank of each treatment
 diagram.get_groups(alpha=.05, adjustment="holm")
 
 # export the diagram to a file
-diagram.to_file("example.tex", title="critdd", reverse_x=True)
+diagram.to_file(
+    "example.tex",
+    alpha = .05,
+    adjustment = "holm",
+    reverse_x = True,
+    axis_options = {"title": "critdd"},
+)
 ```

@@ -30,7 +30,17 @@ class TestReadMe(TestCase):
     output_path = "__example__.pdf"
     if os.path.exists(output_path):
       os.remove(output_path) # make sure the file does not exist already
-    diagram.to_file(output_path, title="critdd", reverse_x=True)
+    diagram.to_file(
+        output_path,
+        alpha = .05,
+        adjustment = "holm",
+        reverse_x = True,
+        axis_options = {"title": "critdd"},
+    )
     self.assertTrue(os.path.exists(output_path))
     with open(os.path.splitext(output_path)[0] + ".tex", "r") as f: # print the file contents
       print("\n"+"-"*32, f.read(), "-"*32+"\n", sep="\n")
+
+    # test deprecation warnings and fallbacks
+    with self.assertWarns(DeprecationWarning):
+      self.assertTrue("title={critdd}" in diagram.to_str(title="critdd"))

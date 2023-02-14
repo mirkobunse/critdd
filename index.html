@@ -118,7 +118,13 @@
 <span class="n">diagram</span><span class="o">.</span><span class="n">get_groups</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">adjustment</span><span class="o">=</span><span class="s2">&quot;holm&quot;</span><span class="p">)</span>
 
 <span class="c1"># export the diagram to a file</span>
-<span class="n">diagram</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="s2">&quot;example.tex&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;critdd&quot;</span><span class="p">,</span> <span class="n">reverse_x</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">diagram</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span>
+    <span class="s2">&quot;example.tex&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.05</span><span class="p">,</span>
+    <span class="n">adjustment</span> <span class="o">=</span> <span class="s2">&quot;holm&quot;</span><span class="p">,</span>
+    <span class="n">reverse_x</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">axis_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;critdd&quot;</span><span class="p">},</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>

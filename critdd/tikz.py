@@ -48,9 +48,12 @@ def to_str(average_ranks, groups, treatment_names, *, title=None, reverse_x=Fals
         "axis line style={-}",
         "title style={yshift=\\baselineskip}",
     ]
-    if k <= 6:
+    if k <= 8:
         axis_options.append(f"xtick={{{','.join((np.arange(k)+1).astype(str))}}}")
-        axis_options.append("minor x tick num=3")
+        if k <= 6:
+            axis_options.append("minor x tick num=3")
+        else:
+            axis_options.append("minor x tick num=1")
     elif k == 10: # [1,2.5,4,5.5,...,k] for k == 10
         axis_options.append(f"xtick={{{','.join((np.arange(1,k+1,1.5)).astype(str))}}}")
         axis_options.append("minor x tick num=2")

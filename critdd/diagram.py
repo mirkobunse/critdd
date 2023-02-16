@@ -2,10 +2,43 @@
 
 import networkx as nx
 import numpy as np
+from abc import ABC, abstractmethod
 from . import stats, tikz
 
-class Diagram(): # TODO extend to an arbitrary number of *Xs
-    """A critical difference diagram.
+class AbstractDiagram(ABC):
+    """Abstract base class for critical difference diagrams in Tikz."""
+    @abstractmethod
+    def to_str(self, alpha=.05, adjustment="holm", **kwargs):
+        """Get a ``str`` object with the Tikz code for this diagram.
+
+        Args:
+            alpha (optional): The threshold for rejecting a p value. Defaults to 0.05.
+            adjustment (optional): The multiple testing adjustment. Defaults to "holm". Another possible value is "bonferroni".
+            reverse_x (optional): Whether to reverse the x direction. Defaults to False.
+            as_document (optional): Whether to include a ``\\documentclass`` and a ``document`` environment. Defaults to False.
+            tikzpicture_options (optional): A ``dict`` with options for the ``tikzpicture`` environment.
+            axis_options (optional): A ``dict`` with options for the ``axis`` environment.
+
+        Returns:
+            A ``str`` object with the Tikz code for this diagram.
+        """
+        pass
+
+    def to_file(self, path, *args, **kwargs):
+        """Store this diagram in a file.
+
+        Note:
+            Storing Tikz code in a ".png" file or ".svg" file is not yet supported.
+
+        Args:
+            path: The file path where this diagram is to be stored. Has to be ending on ".tex", ".tikz", ".pdf", ".png", or ".svg".
+            *args (optional): See ``to_str``.
+            **kwargs (optional): See ``to_str``.
+        """
+        return tikz.to_file(path, self.to_str(*args, **kwargs))
+
+class Diagram(AbstractDiagram):
+    """A regular critical difference diagram.
 
     Args:
         X: An ``(n, k)``-shaped matrix of observations, where ``n`` is the number of observations and ``k`` is the number of treatments.
@@ -27,6 +60,14 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
     @property
     def average_ranks(self):
         return self.r.chi_square_result.average_ranks
+
+    def to_str(self, alpha=.05, adjustment="holm", **kwargs):
+        return tikz.to_str(
+            self.average_ranks,
+            self.get_groups(alpha, adjustment),
+            self.treatment_names,
+            **kwargs
+        )
 
     def get_groups(self, alpha=.05, adjustment="holm", return_names=False):
         """Get the groups of indistinguishable treatments.
@@ -63,37 +104,3 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
                 names.append(list(self.treatment_names[g]))
             return names
         return groups
-
-    def to_str(self, alpha=.05, adjustment="holm", **kwargs):
-        """Get a ``str`` object with the Tikz code for this diagram.
-
-        Args:
-            alpha (optional): The threshold for rejecting a p value. Defaults to 0.05.
-            adjustment (optional): The multiple testing adjustment. Defaults to "holm". Another possible value is "bonferroni".
-            reverse_x (optional): Whether to reverse the x direction. Defaults to False.
-            as_document (optional): Whether to include a ``\\documentclass`` and a ``document`` environment. Defaults to False.
-            tikzpicture_options (optional): A ``dict`` with options for the ``tikzpicture`` environment.
-            axis_options (optional): A ``dict`` with options for the ``axis`` environment.
-
-        Returns:
-            tikz_code: A ``str`` object with the Tikz code for this diagram.
-        """
-        return tikz.to_str(
-            self.average_ranks,
-            self.get_groups(alpha, adjustment),
-            self.treatment_names,
-            **kwargs
-        )
-
-    def to_file(self, path, *args, **kwargs):
-        """Store this diagram in a file.
-
-        Note:
-            Storing Tikz code in a ".png" file or ".svg" file is not yet supported.
-
-        Args:
-            path: The file path where this diagram is to be stored. Has to be ending on ".tex", ".tikz", ".pdf", ".png", or ".svg".
-            *args (optional): See ``self.to_str``.
-            **kwargs (optional): See ``self.to_str``.
-        """
-        return tikz.to_file(path, self.to_str(*args, **kwargs))

@@ -145,21 +145,22 @@ def _environment(name, *contents, options=dict()):
     return "\n".join([
         f"\\begin{{{name}}}" + options_str,
         *contents,
-        f"\n\\end{{{name}}}"
+        f"\\end{{{name}}}"
     ])
 def _document(*contents):
     return "\n".join([
         "\\documentclass[tikz,margin=.1in]{standalone}",
         "\\usepackage{pgfplots,lmodern}",
         "\\pgfplotsset{compat=newest}\n",
-        _environment("document", *contents)
+        _environment("document", *contents),
+        ""
     ])
 def _is_document(tikz_code): # check whether _document is already part of this tikz_code
     return "\\documentclass" in tikz_code
 def _tikzpicture(*contents, options=[]):
     return _environment("tikzpicture", *contents, options=options)
 def _axis(*contents, options=[]):
-    return _environment("axis", *contents, options=options)
+    return _environment("axis", *contents, "", options=options)
 def _treatment(label, rank, xpos, ypos, anchor, reverse_x):
     return f"\\draw[treatment line] ([yshift=-2pt] axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{label}}};"
 def _group(minrank, maxrank, ypos):

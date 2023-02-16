@@ -3,7 +3,7 @@
 import networkx as nx
 import numpy as np
 from abc import ABC, abstractmethod
-from . import stats, tikz
+from . import stats, tikz, tikz_2d
 
 class AbstractDiagram(ABC):
     """Abstract base class for critical difference diagrams in Tikz."""
@@ -104,3 +104,46 @@ class Diagram(AbstractDiagram):
                 names.append(list(self.treatment_names[g]))
             return names
         return groups
+
+class Diagrams(AbstractDiagram):
+    """A sequence of critical difference diagrams, plotted on a single 2-dimensional axis.
+
+    Args:
+        X: An ``(m, n, k)``-shaped tensor of observations, where ``m`` is the number of diagrams, ``n`` is the number of observations, and ``k`` is the number of treatments.
+        diagram_names (optional): The names of the ``m`` diagrams. Defaults to None.
+        treatment_names (optional): The names of the ``k`` treatments. Defaults to None.
+        maximize_outcome (optional): Whether the ranks represent a maximization (True) or a minimization (False) of the outcome. Defaults to False.
+    """
+    def __init__(self, X, *, diagram_names=None, treatment_names=None, maximize_outcome=False):
+        if diagram_names is None:
+            diagram_names = map(lambda i: f"diagram {i}", range(X.shape[1]))
+        elif len(diagram_names) != X.shape[0]:
+            raise ValueError("len(diagram_names) != X.shape[0]")
+        if treatment_names is None:
+            treatment_names = map(lambda i: f"treatment {i}", range(X.shape[1]))
+        elif len(treatment_names) != X.shape[2]:
+            raise ValueError("len(treatment_names) != X.shape[2]")
+        self.diagram_names = diagram_names
+        self.diagrams = [
+            Diagram(X[i], treatment_names=treatment_names, maximize_outcome=maximize_outcome)
+            for i in range(X.shape[0])
+        ]
+
+    def __getitem__(self, i):
+        return self.diagrams[i]
+
+    @property
+    def maximize_outcome(self):
+        return self.diagrams[0].maximize_outcome
+    @property
+    def treatment_names(self):
+        return self.diagrams[0].treatment_names
+
+    def to_str(self, alpha=.05, adjustment="holm", **kwargs):
+        return tikz_2d.to_str(
+            np.stack([ d.average_ranks for d in self.diagrams ]),
+            [ d.get_groups(alpha, adjustment) for d in self.diagrams ],
+            self.treatment_names,
+            self.diagram_names,
+            **kwargs
+        )

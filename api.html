@@ -46,10 +46,21 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manual.html">Manual</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#critdd.Diagram"><code class="docutils literal notranslate"><span class="pre">Diagram</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#critdd.Diagram.get_groups"><code class="docutils literal notranslate"><span class="pre">Diagram.get_groups()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#critdd.Diagram.to_file"><code class="docutils literal notranslate"><span class="pre">Diagram.to_file()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#critdd.Diagram.to_str"><code class="docutils literal notranslate"><span class="pre">Diagram.to_str()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#regular-cd-diagrams">Regular CD diagrams</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#critdd.Diagram"><code class="docutils literal notranslate"><span class="pre">Diagram</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#critdd.Diagram.get_groups"><code class="docutils literal notranslate"><span class="pre">Diagram.get_groups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#critdd.Diagram.to_file"><code class="docutils literal notranslate"><span class="pre">Diagram.to_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#critdd.Diagram.to_str"><code class="docutils literal notranslate"><span class="pre">Diagram.to_str()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#d-sequences-of-cd-diagrams">2D sequences of CD diagrams</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#critdd.Diagrams"><code class="docutils literal notranslate"><span class="pre">Diagrams</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#critdd.Diagrams.to_file"><code class="docutils literal notranslate"><span class="pre">Diagrams.to_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#critdd.Diagrams.to_str"><code class="docutils literal notranslate"><span class="pre">Diagrams.to_str()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -83,10 +94,14 @@
              
   <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h1>
+<div class="section" id="regular-cd-diagrams">
+<h2>Regular CD diagrams<a class="headerlink" href="#regular-cd-diagrams" title="Permalink to this heading"></a></h2>
+<p>A regular CD diagram with <code class="docutils literal notranslate"><span class="pre">n</span></code> observations and <code class="docutils literal notranslate"><span class="pre">k</span></code> treatments is created from an <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">k)</span></code>-shaped matrix, as described in the <a class="reference internal" href="index.html"><span class="doc std std-doc">Quickstart</span></a> section.</p>
+<a class="reference internal image-reference" href="_images/example.svg"><img alt="example.svg" src="_images/example.svg" width="480" /></a>
 <dl class="py class">
 <dt class="sig sig-object py" id="critdd.Diagram">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">critdd.</span></span><span class="sig-name descname"><span class="pre">Diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">treatment_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximize_outcome</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagram" title="Permalink to this definition"></a></dt>
-<dd><p>A critical difference diagram.</p>
+<dd><p>A regular critical difference diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -116,7 +131,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="critdd.Diagram.to_file">
-<span class="sig-name descname"><span class="pre">to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagram.to_file" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagram.to_file" title="Permalink to this definition"></a></dt>
 <dd><p>Store this diagram in a file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -126,12 +141,8 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> – The file path where this diagram is to be stored. Has to be ending on “.tex”, “.tikz”, “.pdf”, “.png”, or “.svg”.</p></li>
-<li><p><strong>alpha</strong> (<em>optional</em>) – The threshold for rejecting a p value. Defaults to 0.05.</p></li>
-<li><p><strong>adjustment</strong> (<em>optional</em>) – The multiple testing adjustment. Defaults to “holm”. Another possible value is “bonferroni”.</p></li>
-<li><p><strong>reverse_x</strong> (<em>optional</em>) – Whether to reverse the x direction. Defaults to False.</p></li>
-<li><p><strong>as_document</strong> (<em>optional</em>) – Whether to include a <code class="docutils literal notranslate"><span class="pre">\documentclass</span></code> and a <code class="docutils literal notranslate"><span class="pre">document</span></code> environment. Defaults to False.</p></li>
-<li><p><strong>tikzpicture_options</strong> (<em>optional</em>) – Options for the <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment.</p></li>
-<li><p><strong>axis_options</strong> (<em>optional</em>) – Options for the <code class="docutils literal notranslate"><span class="pre">axis</span></code> environment.</p></li>
+<li><p><strong>*args</strong> (<em>optional</em>) – See <code class="docutils literal notranslate"><span class="pre">to_str</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional</em>) – See <code class="docutils literal notranslate"><span class="pre">to_str</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -148,8 +159,8 @@
 <li><p><strong>adjustment</strong> (<em>optional</em>) – The multiple testing adjustment. Defaults to “holm”. Another possible value is “bonferroni”.</p></li>
 <li><p><strong>reverse_x</strong> (<em>optional</em>) – Whether to reverse the x direction. Defaults to False.</p></li>
 <li><p><strong>as_document</strong> (<em>optional</em>) – Whether to include a <code class="docutils literal notranslate"><span class="pre">\documentclass</span></code> and a <code class="docutils literal notranslate"><span class="pre">document</span></code> environment. Defaults to False.</p></li>
-<li><p><strong>tikzpicture_options</strong> (<em>optional</em>) – Options for the <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment.</p></li>
-<li><p><strong>axis_options</strong> (<em>optional</em>) – Options for the <code class="docutils literal notranslate"><span class="pre">axis</span></code> environment.</p></li>
+<li><p><strong>tikzpicture_options</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with options for the <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment.</p></li>
+<li><p><strong>axis_options</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with options for the <code class="docutils literal notranslate"><span class="pre">axis</span></code> environment.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -160,6 +171,68 @@
 
 </dd></dl>
 
+</div>
+<div class="section" id="d-sequences-of-cd-diagrams">
+<h2>2D sequences of CD diagrams<a class="headerlink" href="#d-sequences-of-cd-diagrams" title="Permalink to this heading"></a></h2>
+<p>A sequence of <code class="docutils literal notranslate"><span class="pre">m</span></code> CD diagrams can be arranged in a single, 2-dimensional plot. The API for such a plot is similar to the API of <a class="reference internal" href="#regular-cd-diagrams"><span class="std std-doc">Regular CD diagrams</span></a>, but requires a tensor input of shape <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n,</span> <span class="pre">k)</span></code> and an optional list of <code class="docutils literal notranslate"><span class="pre">m</span></code> diagram names.</p>
+<a class="reference internal image-reference" href="_images/2d_example.svg"><img alt="2d_example.svg" src="_images/2d_example.svg" width="480" /></a>
+<dl class="py class">
+<dt class="sig sig-object py" id="critdd.Diagrams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">critdd.</span></span><span class="sig-name descname"><span class="pre">Diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagram_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">treatment_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximize_outcome</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagrams" title="Permalink to this definition"></a></dt>
+<dd><p>A sequence of critical difference diagrams, plotted on a single 2-dimensional axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – An <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n,</span> <span class="pre">k)</span></code>-shaped tensor of observations, where <code class="docutils literal notranslate"><span class="pre">m</span></code> is the number of diagrams, <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of observations, and <code class="docutils literal notranslate"><span class="pre">k</span></code> is the number of treatments.</p></li>
+<li><p><strong>diagram_names</strong> (<em>optional</em>) – The names of the <code class="docutils literal notranslate"><span class="pre">m</span></code> diagrams. Defaults to None.</p></li>
+<li><p><strong>treatment_names</strong> (<em>optional</em>) – The names of the <code class="docutils literal notranslate"><span class="pre">k</span></code> treatments. Defaults to None.</p></li>
+<li><p><strong>maximize_outcome</strong> (<em>optional</em>) – Whether the ranks represent a maximization (True) or a minimization (False) of the outcome. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="critdd.Diagrams.to_file">
+<span class="sig-name descname"><span class="pre">to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagrams.to_file" title="Permalink to this definition"></a></dt>
+<dd><p>Store this diagram in a file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Storing Tikz code in a “.png” file or “.svg” file is not yet supported.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – The file path where this diagram is to be stored. Has to be ending on “.tex”, “.tikz”, “.pdf”, “.png”, or “.svg”.</p></li>
+<li><p><strong>*args</strong> (<em>optional</em>) – See <code class="docutils literal notranslate"><span class="pre">to_str</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional</em>) – See <code class="docutils literal notranslate"><span class="pre">to_str</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="critdd.Diagrams.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagrams.to_str" title="Permalink to this definition"></a></dt>
+<dd><p>Get a <code class="docutils literal notranslate"><span class="pre">str</span></code> object with the Tikz code for this diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>optional</em>) – The threshold for rejecting a p value. Defaults to 0.05.</p></li>
+<li><p><strong>adjustment</strong> (<em>optional</em>) – The multiple testing adjustment. Defaults to “holm”. Another possible value is “bonferroni”.</p></li>
+<li><p><strong>reverse_x</strong> (<em>optional</em>) – Whether to reverse the x direction. Defaults to False.</p></li>
+<li><p><strong>as_document</strong> (<em>optional</em>) – Whether to include a <code class="docutils literal notranslate"><span class="pre">\documentclass</span></code> and a <code class="docutils literal notranslate"><span class="pre">document</span></code> environment. Defaults to False.</p></li>
+<li><p><strong>tikzpicture_options</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with options for the <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment.</p></li>
+<li><p><strong>axis_options</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with options for the <code class="docutils literal notranslate"><span class="pre">axis</span></code> environment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">str</span></code> object with the Tikz code for this diagram.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 

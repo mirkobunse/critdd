@@ -21,11 +21,6 @@ Critical difference (CD) diagrams are a powerful tool to compare outcomes of mul
 
 <img alt="2d_example.svg" src="2d_example.svg" width="480">
 
-```{note}
-
-2D diagrams are currently under development.
-```
-
 
 ## Installation
 

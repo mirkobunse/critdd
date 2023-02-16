@@ -30,16 +30,17 @@ AXIS_OPTIONS = { # basic axis options, which don't depend on the diagram values
     "title style": "yshift=\\baselineskip",
 }
 
-def to_file(path, average_ranks, groups, treatment_names, **kwargs):
-    """Store the Tikz code in a file."""
+def to_file(path, tikz_code):
+    """Export the tikz_code to a file."""
     root, ext = os.path.splitext(path)
     if ext not in [ ".tex", ".tikz", ".pdf", ".svg", ".png" ]:
         raise ValueError("Unknown file path extension")
     if ext in [ ".pdf", ".svg", ".png" ]:
-        kwargs["as_document"] = True # export an entire document, not only a tikzpicture
+        if not _is_document(tikz_code):
+            tikz_code = _document(tikz_code) # export an entire document
         path = root + ".tex"
     with open(path, "w") as f: # store the Tikz code in a .tex or .tikz file
-        f.write(to_str(average_ranks, groups, treatment_names, **kwargs))
+        f.write(tikz_code)
     if ext in [ ".tex", ".tikz" ]:
         return None # we are done here
     pdflatex = subprocess.Popen(
@@ -153,6 +154,8 @@ def _document(*contents):
         "\\pgfplotsset{compat=newest}\n",
         _environment("document", *contents)
     ])
+def _is_document(tikz_code): # check whether _document is already part of this tikz_code
+    return "\\documentclass" in tikz_code
 def _tikzpicture(*contents, options=[]):
     return _environment("tikzpicture", *contents, options=options)
 def _axis(*contents, options=[]):

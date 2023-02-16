@@ -85,7 +85,7 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
             **kwargs
         )
 
-    def to_file(self, path, alpha=.05, adjustment="holm", **kwargs):
+    def to_file(self, path, *args, **kwargs):
         """Store this diagram in a file.
 
         Note:
@@ -93,14 +93,7 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
 
         Args:
             path: The file path where this diagram is to be stored. Has to be ending on ".tex", ".tikz", ".pdf", ".png", or ".svg".
-            alpha (optional): The threshold for rejecting a p value. Defaults to 0.05.
-            adjustment (optional): The multiple testing adjustment. Defaults to "holm". Another possible value is "bonferroni".
-            **kwargs (optional): See ``to_str``.
+            *args (optional): See ``self.to_str``.
+            **kwargs (optional): See ``self.to_str``.
         """
-        return tikz.to_file(
-            path,
-            self.average_ranks,
-            self.get_groups(alpha, adjustment),
-            self.treatment_names,
-            **kwargs
-        )
+        return tikz.to_file(path, self.to_str(*args, **kwargs))

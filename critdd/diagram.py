@@ -2,9 +2,7 @@
 
 import networkx as nx
 import numpy as np
-from scipy import stats
-from .stats import friedman
-from . import tikz
+from . import stats, tikz
 
 class Diagram(): # TODO extend to an arbitrary number of *Xs
     """A critical difference diagram.
@@ -20,8 +18,8 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
         elif len(treatment_names) != X.shape[1]:
             raise ValueError("len(treatment_names) != X.shape[1]")
         self.treatment_names = np.array(treatment_names)
-        self.r = friedman(X, maximize_outcome=maximize_outcome)
-        self.P = _pairwise_tests(X)
+        self.r = stats.friedman(X, maximize_outcome=maximize_outcome)
+        self.P = stats.pairwise_tests(X)
 
     @property
     def maximize_outcome(self):
@@ -43,7 +41,7 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
         """
         if self.r.pvalue >= alpha: # does the Friedman test fail to reject?
             return [ np.arange(len(self.average_ranks)) ] # all treatments in a single group
-        P = _adjust_pairwise_tests(self.P, adjustment)
+        P = stats.adjust_pairwise_tests(self.P, adjustment)
         G = nx.Graph(np.logical_and(np.isfinite(P), P >= alpha))
         groups = list(nx.find_cliques(G)) # groups = maximal cliques
         r_min = np.empty(len(groups)) # minimum and maximum rank per group
@@ -74,11 +72,11 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
             adjustment (optional): The multiple testing adjustment. Defaults to "holm". Another possible value is "bonferroni".
             reverse_x (optional): Whether to reverse the x direction. Defaults to False.
             as_document (optional): Whether to include a ``\\documentclass`` and a ``document`` environment. Defaults to False.
-            tikzpicture_options (optional): Options for the ``tikzpicture`` environment.
-            axis_options (optional): Options for the ``axis`` environment.
+            tikzpicture_options (optional): A ``dict`` with options for the ``tikzpicture`` environment.
+            axis_options (optional): A ``dict`` with options for the ``axis`` environment.
 
         Returns:
-            A ``str`` object with the Tikz code for this diagram.
+            tikz_code: A ``str`` object with the Tikz code for this diagram.
         """
         return tikz.to_str(
             self.average_ranks,
@@ -97,10 +95,7 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
             path: The file path where this diagram is to be stored. Has to be ending on ".tex", ".tikz", ".pdf", ".png", or ".svg".
             alpha (optional): The threshold for rejecting a p value. Defaults to 0.05.
             adjustment (optional): The multiple testing adjustment. Defaults to "holm". Another possible value is "bonferroni".
-            reverse_x (optional): Whether to reverse the x direction. Defaults to False.
-            as_document (optional): Whether to include a ``\\documentclass`` and a ``document`` environment. Defaults to False.
-            tikzpicture_options (optional): Options for the ``tikzpicture`` environment.
-            axis_options (optional): Options for the ``axis`` environment.
+            **kwargs (optional): See ``to_str``.
         """
         return tikz.to_file(
             path,
@@ -109,33 +104,3 @@ class Diagram(): # TODO extend to an arbitrary number of *Xs
             self.treatment_names,
             **kwargs
         )
-
-def _pairwise_tests(X):
-    k = X.shape[1] # number of treatments
-    P = np.ones((k, k)) * np.nan
-    for i in range(1, k):
-        for j in range(i):
-            P[i,j] = stats.wilcoxon(
-                X[:,i],
-                X[:,j],
-                method = "exact",
-                zero_method = 'pratt'
-            ).pvalue
-    return P
-
-def _adjust_pairwise_tests(P, adjustment):
-    ij_finite = np.argwhere(np.isfinite(P))
-    p = np.array([ P[tuple(ij)] for ij in ij_finite ]) # flat array of finite elements
-    sortperm = np.argsort(p)
-    p_ = p[sortperm] # sorted p values
-    if adjustment == "holm":
-        p_ = np.maximum.accumulate(p_ * np.arange(len(p_), 0, -1))
-    elif adjustment == "bonferroni":
-        p_ *= len(p_)
-    else:
-        raise ValueError("adjustment must be either \"holm\" or \"bonferroni\"")
-    p[sortperm] = p_ # restore the original order
-    P = np.ones_like(P) * np.nan
-    for ((i, j), p_ij) in zip(ij_finite, p):
-        P[i,j] = p_ij
-    return P

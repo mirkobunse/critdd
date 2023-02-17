@@ -18,6 +18,7 @@ class AbstractDiagram(ABC):
             as_document (optional): Whether to include a ``\\documentclass`` and a ``document`` environment. Defaults to False.
             tikzpicture_options (optional): A ``dict`` with options for the ``tikzpicture`` environment.
             axis_options (optional): A ``dict`` with options for the ``axis`` environment.
+            preamble (optional): A ``str`` with LaTeX commands. Only used if ``as_document==True``. Defaults to None.
 
         Returns:
             A ``str`` object with the Tikz code for this diagram.
@@ -35,6 +36,8 @@ class AbstractDiagram(ABC):
             *args (optional): See ``to_str``.
             **kwargs (optional): See ``to_str``.
         """
+        if tikz.requires_document(path):
+            kwargs["as_document"] = True
         return tikz.to_file(path, self.to_str(*args, **kwargs))
 
 class Diagram(AbstractDiagram):
@@ -64,18 +67,19 @@ class Diagram(AbstractDiagram):
     def to_str(self, alpha=.05, adjustment="holm", **kwargs):
         return tikz.to_str(
             self.average_ranks,
-            self.get_groups(alpha, adjustment),
+            self.get_groups(alpha, adjustment, return_singletons=False),
             self.treatment_names,
             **kwargs
         )
 
-    def get_groups(self, alpha=.05, adjustment="holm", return_names=False):
+    def get_groups(self, alpha=.05, adjustment="holm", return_names=False, return_singletons=True):
         """Get the groups of indistinguishable treatments.
 
         Args:
             alpha (optional): The threshold for rejecting a p value. Defaults to 0.05.
             adjustment (optional): The multiple testing adjustment. Defaults to "holm". Another possible value is "bonferroni".
             return_names (optional): Whether to represent the treatments in the groups by their names (True) or by their indices (False). Defaults to False.
+            return_singletons (optional): Whether to return groups with single elements. Defaults to True.
 
         Returns:
             A list of statistically indistinguishable groups.
@@ -98,6 +102,8 @@ class Diagram(AbstractDiagram):
                 np.logical_or(r_min >= r_min[i], r_max < r_max[i])
             ))
         groups = [ g for (g, i) in zip(groups, is_maximal) if i ] # remove non-maximal groups
+        if not return_singletons:
+            groups = list(filter(lambda g: len(g) > 1, groups))
         if return_names:
             names = []
             for g in groups:
@@ -142,7 +148,7 @@ class Diagrams(AbstractDiagram):
     def to_str(self, alpha=.05, adjustment="holm", **kwargs):
         return tikz_2d.to_str(
             np.stack([ d.average_ranks for d in self.diagrams ]),
-            [ d.get_groups(alpha, adjustment) for d in self.diagrams ],
+            [ d.get_groups(alpha, adjustment, return_singletons=False) for d in self.diagrams ],
             self.treatment_names,
             self.diagram_names,
             **kwargs

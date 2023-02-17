@@ -36,8 +36,6 @@ def to_file(path, tikz_code):
     if ext not in [ ".tex", ".tikz", ".pdf", ".svg", ".png" ]:
         raise ValueError("Unknown file path extension")
     if ext in [ ".pdf", ".svg", ".png" ]:
-        if not _is_document(tikz_code):
-            tikz_code = _document(tikz_code) # export an entire document
         path = root + ".tex"
     with open(path, "w") as f: # store the Tikz code in a .tex or .tikz file
         f.write(tikz_code)
@@ -54,7 +52,11 @@ def to_file(path, tikz_code):
     if ext in [ ".svg", ".png" ]:
         raise NotImplementedError(f"{ext} export is not yet implemented")
 
-def to_str(average_ranks, groups, treatment_names, *, reverse_x=False, as_document=False, tikzpicture_options=dict(), axis_options=dict(), title=None):
+def requires_document(path):
+    """Determine whether an export requires as_document=True."""
+    return os.path.splitext(path)[1] in [ ".pdf", ".svg", ".png" ]
+
+def to_str(average_ranks, groups, treatment_names, *, reverse_x=False, as_document=False, tikzpicture_options=dict(), axis_options=dict(), preamble=None, title=None):
     """Return a string with Tikz code."""
     if title is not None:
         axis_options |= {"title": title} # set the title
@@ -129,7 +131,7 @@ def to_str(average_ranks, groups, treatment_names, *, reverse_x=False, as_docume
         options = TIKZPICTURE_OPTIONS | tikzpicture_options
     )
     if as_document:
-        tikz_str = _document(tikz_str)
+        tikz_str = _document(tikz_str, preamble=preamble)
     return tikz_str
 
 def _indent(content):
@@ -147,16 +149,15 @@ def _environment(name, *contents, options=dict()):
         *contents,
         f"\\end{{{name}}}"
     ])
-def _document(*contents):
+def _document(*contents, preamble=None):
     return "\n".join([
         "\\documentclass[tikz,margin=.1in]{standalone}",
         "\\usepackage{pgfplots,lmodern}",
-        "\\pgfplotsset{compat=newest}\n",
+        "\\pgfplotsset{compat=newest}",
+        "" if preamble is None else "\n" + preamble + "\n",
         _environment("document", *contents),
         ""
     ])
-def _is_document(tikz_code): # check whether _document is already part of this tikz_code
-    return "\\documentclass" in tikz_code
 def _tikzpicture(*contents, options=[]):
     return _environment("tikzpicture", *contents, options=options)
 def _axis(*contents, options=[]):

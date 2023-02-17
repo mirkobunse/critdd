@@ -3,7 +3,7 @@
 import numpy as np
 import os, re, subprocess, warnings
 
-class LatexException(Exception):
+class ExportException(Exception):
     def __init__(self, path):
         super().__init__(f"Failed to produce {path}")
 
@@ -48,8 +48,17 @@ def to_file(path, tikz_code):
     (out, err) = pdflatex.communicate() # convert to PDF
     if pdflatex.returncode:
         print(out.decode())
-        raise LatexException(root + ".pdf")
-    if ext in [ ".svg", ".png" ]:
+        raise ExportException(root + ".pdf")
+    if ext == ".svg":
+        pdf_to_svg = subprocess.Popen(
+            ["pdf2svg", root + ".pdf", root + ".svg"],
+            stdout = subprocess.PIPE
+        )
+        (out, err) = pdf_to_svg.communicate() # convert to SVG
+        if pdf_to_svg.returncode:
+            print(out.decode())
+            raise ExportException(root + ".svg")
+    elif ext == ".png":
         raise NotImplementedError(f"{ext} export is not yet implemented")
 
 def requires_document(path):

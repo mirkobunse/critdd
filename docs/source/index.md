@@ -117,7 +117,7 @@ two_dimensional_diagram.to_file(
             "{color5,mark=pentagon,semithick}",
         ]),
         "width": "\\axisdefaultwidth",
-        "height": "0.8*\\axisdefaultheight",
+        "height": "0.75*\\axisdefaultheight",
         "title": "critdd"
     },
 )

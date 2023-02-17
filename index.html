@@ -124,6 +124,61 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="advanced-usage-2d-diagrams">
+<h2>Advanced usage: 2D diagrams<a class="headerlink" href="#advanced-usage-2d-diagrams" title="Permalink to this heading"></a></h2>
+<p>In the following, we create a 2-dimensional plot that represents a sequence of CD diagrams. During the process, we customize the style of the plot.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">critdd</span> <span class="kn">import</span> <span class="n">Diagrams</span> <span class="c1"># Diagrams is the 2D version of Diagram</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># download the example data</span>
+<span class="n">_URL</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/mirkobunse/critdd/main/docs/source/2d_example.csv&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">_URL</span><span class="p">)</span>
+
+<span class="c1"># construct a sequence of CD diagrams</span>
+<span class="n">treatment_names</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">diagram_names</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;diagram&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">Xs</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># collect an (n,k)-shaped matrix for each diagram</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">diagram_names</span><span class="p">:</span>
+    <span class="n">diagram_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">diagram</span> <span class="o">==</span> <span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="s2">&quot;dataset&quot;</span><span class="p">,</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="s2">&quot;loss&quot;</span>
+    <span class="p">)[</span><span class="n">treatment_names</span><span class="p">]</span> <span class="c1"># ensure a fixed order of treatments</span>
+    <span class="n">Xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">diagram_df</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+<span class="n">two_dimensional_diagram</span> <span class="o">=</span> <span class="n">Diagrams</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">Xs</span><span class="p">),</span>
+    <span class="n">diagram_names</span> <span class="o">=</span> <span class="n">diagram_names</span><span class="p">,</span>
+    <span class="n">treatment_names</span> <span class="o">=</span> <span class="n">treatment_names</span><span class="p">,</span>
+    <span class="n">maximize_outcome</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="c1"># customize the style of the plot and export to PDF</span>
+<span class="n">two_dimensional_diagram</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span>
+    <span class="s2">&quot;2d_example.pdf&quot;</span><span class="p">,</span>
+    <span class="n">preamble</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span> <span class="c1"># colors are defined before \begin{document}</span>
+        <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">definecolor</span><span class="si">{color1}{HTML}{84B818}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">definecolor</span><span class="si">{color2}{HTML}{D18B12}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">definecolor</span><span class="si">{color3}{HTML}{1BB5B5}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">definecolor</span><span class="si">{color4}{HTML}{F85A3E}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">definecolor</span><span class="si">{color5}{HTML}{4B6CFC}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">]),</span>
+    <span class="n">axis_options</span> <span class="o">=</span> <span class="p">{</span> <span class="c1"># style the plot</span>
+        <span class="s2">&quot;cycle list&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span> <span class="c1"># define the markers for treatments</span>
+            <span class="s2">&quot;{color1,mark=*}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{color2,mark=diamond*}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{color3,mark=triangle,semithick}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{color4,mark=square,semithick}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{color5,mark=pentagon,semithick}&quot;</span><span class="p">,</span>
+        <span class="p">]),</span>
+        <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">axisdefaultwidth&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="s2">&quot;0.75*</span><span class="se">\\</span><span class="s2">axisdefaultheight&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;critdd&quot;</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

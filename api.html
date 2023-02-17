@@ -113,7 +113,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="critdd.Diagram.get_groups">
-<span class="sig-name descname"><span class="pre">get_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagram.get_groups" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_singletons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagram.get_groups" title="Permalink to this definition"></a></dt>
 <dd><p>Get the groups of indistinguishable treatments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -121,6 +121,7 @@
 <li><p><strong>alpha</strong> (<em>optional</em>) – The threshold for rejecting a p value. Defaults to 0.05.</p></li>
 <li><p><strong>adjustment</strong> (<em>optional</em>) – The multiple testing adjustment. Defaults to “holm”. Another possible value is “bonferroni”.</p></li>
 <li><p><strong>return_names</strong> (<em>optional</em>) – Whether to represent the treatments in the groups by their names (True) or by their indices (False). Defaults to False.</p></li>
+<li><p><strong>return_singletons</strong> (<em>optional</em>) – Whether to return groups with single elements. Defaults to True.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -161,6 +162,7 @@
 <li><p><strong>as_document</strong> (<em>optional</em>) – Whether to include a <code class="docutils literal notranslate"><span class="pre">\documentclass</span></code> and a <code class="docutils literal notranslate"><span class="pre">document</span></code> environment. Defaults to False.</p></li>
 <li><p><strong>tikzpicture_options</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with options for the <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment.</p></li>
 <li><p><strong>axis_options</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with options for the <code class="docutils literal notranslate"><span class="pre">axis</span></code> environment.</p></li>
+<li><p><strong>preamble</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">str</span></code> with LaTeX commands. Only used if <code class="docutils literal notranslate"><span class="pre">as_document==True</span></code>. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -222,6 +224,7 @@
 <li><p><strong>as_document</strong> (<em>optional</em>) – Whether to include a <code class="docutils literal notranslate"><span class="pre">\documentclass</span></code> and a <code class="docutils literal notranslate"><span class="pre">document</span></code> environment. Defaults to False.</p></li>
 <li><p><strong>tikzpicture_options</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with options for the <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment.</p></li>
 <li><p><strong>axis_options</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with options for the <code class="docutils literal notranslate"><span class="pre">axis</span></code> environment.</p></li>
+<li><p><strong>preamble</strong> (<em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">str</span></code> with LaTeX commands. Only used if <code class="docutils literal notranslate"><span class="pre">as_document==True</span></code>. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

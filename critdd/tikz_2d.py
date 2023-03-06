@@ -29,7 +29,7 @@ def to_str(average_ranks, groups, treatment_names, diagram_names, *, reverse_x=F
     changepoint = int(np.floor(k/2)) # index for breaking left and right treatments
     axis_defaults = AXIS_OPTIONS | { # diagram-dependent axis options
         "ytick": ",".join((np.arange(m)+1).astype(str)),
-        "yticklabels": ",".join([ "{" + n + "}" for n in diagram_names ]),
+        "yticklabels": ",".join([ "{" + tikz._label(n) + "}" for n in diagram_names ]),
         "xmax": str(k + .5),
         "ymax": str(m + .66),
         "height": f"{.5 if m == 2 else m/5 if m < 5 else m/6}*\\axisdefaultheight",
@@ -57,7 +57,7 @@ def _rank_plot(average_ranks, treatment_name):
         "\\addplot+[only marks] coordinates {",
         "  " + "\n  ".join([ f"({r}, {i+1})" for (i, r) in enumerate(average_ranks) ]),
         "};",
-        "\\addlegendentry{" + treatment_name + "}",
+        "\\addlegendentry{" + tikz._label(treatment_name) + "}",
     ])
 def _group(minrank, maxrank, ypos):
     return f"\\draw[group line] (axis cs:{minrank},{ypos}) -- ++(0pt,-3pt) -- ([yshift=-3pt]axis cs:{maxrank},{ypos}) -- ++(0pt,3pt);"

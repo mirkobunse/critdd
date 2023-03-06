@@ -172,6 +172,8 @@ def _tikzpicture(*contents, options=[]):
 def _axis(*contents, options=[]):
     return _environment("axis", *contents, "", options=options)
 def _treatment(label, rank, xpos, ypos, anchor, reverse_x):
-    return f"\\draw[treatment line] ([yshift=-2pt] axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{label}}};"
+    return f"\\draw[treatment line] ([yshift=-2pt] axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{_label(label)}}};"
+def _label(label):
+    return re.sub("(?<!\\\\)_", "\\\\_", label) # replace "_", but not "\_", with "\_"
 def _group(minrank, maxrank, ypos):
     return f"\\draw[group line] (axis cs:{minrank}, {-ypos}) -- (axis cs:{maxrank}, {-ypos});"

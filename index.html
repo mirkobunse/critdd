@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quickstart &mdash; critdd 0.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -10,10 +11,8 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -74,7 +73,7 @@
              
   <div class="toctree-wrapper compound">
 </div>
-<div class="section" id="quickstart">
+<section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h1>
 <p>This Python package generates Tikz code for publication-ready vector graphics.</p>
 <p>Critical difference (CD) diagrams are a powerful tool to compare outcomes of multiple treatments over multiple observations. In machine learning research, for instance, we often compare the performance (= outcome) of multiple methods (= treatments) over multiple data sets (= observations).</p>
@@ -82,13 +81,13 @@
 <a class="reference internal image-reference" href="_images/example.svg"><img alt="example.svg" src="_images/example.svg" width="480" /></a>
 <p><strong>2D sequences:</strong> sequences of multiple CD diagrams can be arranged in a single, 2-dimensional plot.</p>
 <a class="reference internal image-reference" href="_images/2d_example.svg"><img alt="2d_example.svg" src="_images/2d_example.svg" width="480" /></a>
-<div class="section" id="installation">
+<section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="s1">&#39;critdd @ git+https://github.com/mirkobunse/critdd&#39;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="usage">
+</section>
+<section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
 <p>Basically, you use this package as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">critdd</span> <span class="kn">import</span> <span class="n">Diagram</span>
@@ -123,8 +122,8 @@
 <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="advanced-usage-2d-diagrams">
+</section>
+<section id="advanced-usage-2d-diagrams">
 <h2>Advanced usage: 2D diagrams<a class="headerlink" href="#advanced-usage-2d-diagrams" title="Permalink to this heading"></a></h2>
 <p>In the following, we create a 2-dimensional plot that represents a sequence of CD diagrams. During the process, we customize the style of the plot.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">critdd</span> <span class="kn">import</span> <span class="n">Diagrams</span> <span class="c1"># Diagrams is the 2D version of Diagram</span>
@@ -178,8 +177,8 @@
 <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

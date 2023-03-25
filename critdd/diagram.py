@@ -95,6 +95,13 @@ class Diagram(AbstractDiagram):
             r_g = self.average_ranks[groups[i]]
             r_min[i] = np.min(r_g)
             r_max[i] = np.max(r_g)
+            groups[i] = np.unique(np.concatenate((
+                groups[i],
+                np.flatnonzero(np.logical_and(
+                    self.average_ranks >= r_min[i],
+                    self.average_ranks <= r_max[i]
+                ))
+            ))) # insert intermediate ranks: {r_n, r_{n+m}} -> {r_n, r_{n+1}, ..., r_{n+m}}
         is_maximal = np.empty(len(groups), bool)
         for i in range(len(groups)):
             is_maximal[i] = np.all(np.logical_and(

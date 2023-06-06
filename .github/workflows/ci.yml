@@ -27,7 +27,7 @@ jobs:
         sudo apt-get install --fix-missing pdf2svg texlive-latex-base texlive-binaries texlive-pictures texlive-latex-extra texlive-luatex
     - name: Install package dependencies
       run: |
-        python -m pip install --upgrade pip
+        python -m pip install --upgrade pip setuptools wheel
         python -m pip install -e .[tests]
     - name: Test with unittest
       run: python -m unittest
@@ -42,7 +42,7 @@ jobs:
       uses: ammaraskar/sphinx-action@master
       with:
         pre-build-command: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip setuptools wheel
           python -m pip install -e .[docs]
           sphinx-apidoc --force --output-dir docs/source qunfold
         docs-folder: "docs/"

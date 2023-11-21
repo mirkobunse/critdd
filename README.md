@@ -20,6 +20,7 @@ Critical difference (CD) diagrams are a powerful tool to compare outcomes of mul
 ## Installation
 
 ```
+pip install --upgrade pip setuptools wheel
 pip install 'critdd @ git+https://github.com/mirkobunse/critdd'
 ```
 

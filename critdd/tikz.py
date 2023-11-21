@@ -30,6 +30,12 @@ AXIS_OPTIONS = { # basic axis options, which don't depend on the diagram values
     "title style": "yshift=\\baselineskip",
 }
 
+def _merge_dicts(a, b):
+    """Merge two dictionaries in the same way that `a | b` does since Python 3.9."""
+    a = { k: a[k] for k in a } # create a copy of dict a
+    a.update(b) # merge dicts a and b
+    return a
+
 def to_file(path, tikz_code):
     """Export the tikz_code to a file."""
     root, ext = os.path.splitext(path)
@@ -68,18 +74,18 @@ def requires_document(path):
 def to_str(average_ranks, groups, treatment_names, *, reverse_x=False, as_document=False, tikzpicture_options=dict(), axis_options=dict(), preamble=None, title=None):
     """Return a string with Tikz code."""
     if title is not None:
-        axis_options |= {"title": title} # set the title
+        axis_options = _merge_dicts(axis_options, {"title": title}) # set the title
         warnings.warn(
             "to_str(..., title=x) will be retired in v0.1, please use to_str(..., axis_options={\"title\": title}) instead.",
             DeprecationWarning
         )
     k = len(average_ranks)
     changepoint = int(np.floor(k/2)) # index for breaking left and right treatments
-    axis_defaults = AXIS_OPTIONS | { # diagram-dependent axis options
+    axis_defaults = _merge_dicts(AXIS_OPTIONS, { # diagram-dependent axis options
         "xmax": str(k),
         "ymin": str(-(changepoint+1.5)),
         "height": f"{changepoint+2}\\baselineskip", # ceil(k/2) + 1 extra \\baselikeskip
-    }
+    })
     if k <= 8:
         axis_defaults["xtick"] = ",".join((np.arange(k)+1).astype(str))
         if k <= 6:
@@ -136,8 +142,8 @@ def to_str(average_ranks, groups, treatment_names, *, reverse_x=False, as_docume
             y_group_pos[i]
         ))
     tikz_str = _tikzpicture(
-        _axis(*commands, options=axis_defaults | axis_options),
-        options = TIKZPICTURE_OPTIONS | tikzpicture_options
+        _axis(*commands, options=_merge_dicts(axis_defaults, axis_options)),
+        options = _merge_dicts(TIKZPICTURE_OPTIONS, tikzpicture_options)
     )
     if as_document:
         tikz_str = _document(tikz_str, preamble=preamble)

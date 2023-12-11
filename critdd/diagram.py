@@ -122,24 +122,29 @@ class Diagrams(AbstractDiagram):
     """A sequence of critical difference diagrams, plotted on a single 2-dimensional axis.
 
     Args:
-        X: An ``(m, n, k)``-shaped tensor of observations, where ``m`` is the number of diagrams, ``n`` is the number of observations, and ``k`` is the number of treatments.
+        X: A list of length ``m`` of ``(n, k)``-shaped tensors of observations, where ``m`` is the number of diagrams, ``n`` is the number of observations, and ``k`` is the number of treatments.
         diagram_names (optional): The names of the ``m`` diagrams. Defaults to None.
         treatment_names (optional): The names of the ``k`` treatments. Defaults to None.
         maximize_outcome (optional): Whether the ranks represent a maximization (True) or a minimization (False) of the outcome. Defaults to False.
     """
     def __init__(self, X, *, diagram_names=None, treatment_names=None, maximize_outcome=False):
+        n_diagrams = len(X)
+
+        # Check if there are the same number of treatmens in all tensors
+        assert np.all([X[0].shape[-1] == x.shape[-1] for x in X])
+        
         if diagram_names is None:
-            diagram_names = map(lambda i: f"diagram {i}", range(X.shape[1]))
-        elif len(diagram_names) != X.shape[0]:
-            raise ValueError("len(diagram_names) != X.shape[0]")
+            diagram_names = map(lambda i: f"diagram {i}", range(n_diagrams))
+        elif len(diagram_names) != n_diagrams:
+            raise ValueError("len(diagram_names) != len(X)")
         if treatment_names is None:
-            treatment_names = map(lambda i: f"treatment {i}", range(X.shape[1]))
-        elif len(treatment_names) != X.shape[2]:
-            raise ValueError("len(treatment_names) != X.shape[2]")
+            treatment_names = map(lambda i: f"treatment {i}", range(X[0].shape[1]))
+        elif len(treatment_names) != X[0].shape[1]:
+            raise ValueError("len(treatment_names) != X[0].shape[1]")
         self.diagram_names = diagram_names
         self.diagrams = [
             Diagram(X[i], treatment_names=treatment_names, maximize_outcome=maximize_outcome)
-            for i in range(X.shape[0])
+            for i in range(n_diagrams)
         ]
 
     def __getitem__(self, i):

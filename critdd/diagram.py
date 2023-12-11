@@ -50,7 +50,7 @@ class Diagram(AbstractDiagram):
     """
     def __init__(self, X, *, treatment_names=None, maximize_outcome=False):
         if treatment_names is None:
-            treatment_names = map(lambda i: f"treatment {i}", range(X.shape[1]))
+            treatment_names = [ f"treatment {i}" for i in range(X.shape[1]) ]
         elif len(treatment_names) != X.shape[1]:
             raise ValueError("len(treatment_names) != X.shape[1]")
         self.treatment_names = np.array(treatment_names)
@@ -122,24 +122,35 @@ class Diagrams(AbstractDiagram):
     """A sequence of critical difference diagrams, plotted on a single 2-dimensional axis.
 
     Args:
-        X: An ``(m, n, k)``-shaped tensor of observations, where ``m`` is the number of diagrams, ``n`` is the number of observations, and ``k`` is the number of treatments.
+        Xs: Observations, given either as a list of length ``m`` of ``(n, k)``-shaped matrices or as an ``(m, n, k)``-shaped tensor, where ``m`` is the number of diagrams, ``n`` is the number of observations, and ``k`` is the number of treatments.
         diagram_names (optional): The names of the ``m`` diagrams. Defaults to None.
         treatment_names (optional): The names of the ``k`` treatments. Defaults to None.
         maximize_outcome (optional): Whether the ranks represent a maximization (True) or a minimization (False) of the outcome. Defaults to False.
     """
-    def __init__(self, X, *, diagram_names=None, treatment_names=None, maximize_outcome=False):
+    def __init__(
+            self,
+            Xs,
+            *,
+            diagram_names = None,
+            treatment_names = None,
+            maximize_outcome = False,
+            ):
+        n_diagrams = len(Xs)
+        n_treatments = Xs[0].shape[1]
+        if not np.all([ X.shape[1] == n_treatments for X in Xs ]):
+            raise ValueError("Xs has elements with different numbers of treatments")
         if diagram_names is None:
-            diagram_names = map(lambda i: f"diagram {i}", range(X.shape[1]))
-        elif len(diagram_names) != X.shape[0]:
-            raise ValueError("len(diagram_names) != X.shape[0]")
+            diagram_names = [ f"diagram {i+1}" for i in range(n_diagrams) ]
+        elif len(diagram_names) != n_diagrams:
+            raise ValueError("len(diagram_names) != len(Xs)")
         if treatment_names is None:
-            treatment_names = map(lambda i: f"treatment {i}", range(X.shape[1]))
-        elif len(treatment_names) != X.shape[2]:
-            raise ValueError("len(treatment_names) != X.shape[2]")
+            treatment_names = [ f"treatment {i+1}" for i in range(n_treatments) ]
+        elif len(treatment_names) != n_treatments:
+            raise ValueError("len(treatment_names) != Xs[i].shape[1]")
         self.diagram_names = diagram_names
         self.diagrams = [
-            Diagram(X[i], treatment_names=treatment_names, maximize_outcome=maximize_outcome)
-            for i in range(X.shape[0])
+            Diagram(X, treatment_names=treatment_names, maximize_outcome=maximize_outcome)
+            for X in Xs
         ]
 
     def __getitem__(self, i):

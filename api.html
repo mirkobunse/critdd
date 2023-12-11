@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>API &mdash; critdd 0.0.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -180,12 +182,12 @@
 <a class="reference internal image-reference" href="_images/2d_example.svg"><img alt="2d_example.svg" src="_images/2d_example.svg" width="480" /></a>
 <dl class="py class">
 <dt class="sig sig-object py" id="critdd.Diagrams">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">critdd.</span></span><span class="sig-name descname"><span class="pre">Diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagram_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">treatment_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximize_outcome</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagrams" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">critdd.</span></span><span class="sig-name descname"><span class="pre">Diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Xs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagram_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">treatment_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximize_outcome</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#critdd.Diagrams" title="Permalink to this definition"></a></dt>
 <dd><p>A sequence of critical difference diagrams, plotted on a single 2-dimensional axis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> – An <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n,</span> <span class="pre">k)</span></code>-shaped tensor of observations, where <code class="docutils literal notranslate"><span class="pre">m</span></code> is the number of diagrams, <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of observations, and <code class="docutils literal notranslate"><span class="pre">k</span></code> is the number of treatments.</p></li>
+<li><p><strong>Xs</strong> – Observations, given either as a list of length <code class="docutils literal notranslate"><span class="pre">m</span></code> of <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">k)</span></code>-shaped matrices or as an <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n,</span> <span class="pre">k)</span></code>-shaped tensor, where <code class="docutils literal notranslate"><span class="pre">m</span></code> is the number of diagrams, <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of observations, and <code class="docutils literal notranslate"><span class="pre">k</span></code> is the number of treatments.</p></li>
 <li><p><strong>diagram_names</strong> (<em>optional</em>) – The names of the <code class="docutils literal notranslate"><span class="pre">m</span></code> diagrams. Defaults to None.</p></li>
 <li><p><strong>treatment_names</strong> (<em>optional</em>) – The names of the <code class="docutils literal notranslate"><span class="pre">k</span></code> treatments. Defaults to None.</p></li>
 <li><p><strong>maximize_outcome</strong> (<em>optional</em>) – Whether the ranks represent a maximization (True) or a minimization (False) of the outcome. Defaults to False.</p></li>

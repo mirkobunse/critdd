@@ -71,7 +71,7 @@ def requires_document(path):
     """Determine whether an export requires as_document=True."""
     return os.path.splitext(path)[1] in [ ".pdf", ".svg", ".png" ]
 
-def to_str(average_ranks, groups, treatment_names, *, reverse_x=False, as_document=False, tikzpicture_options=dict(), axis_options=dict(), preamble=None, title=None):
+def to_str(average_ranks, groups, treatment_names, *, reverse_x=False, as_document=False, tikzpicture_options=dict(), axis_options=dict(), preamble=None, title=None, escape_underscore=True):
     """Return a string with Tikz code."""
     if title is not None:
         axis_options = _merge_dicts(axis_options, {"title": title}) # set the title
@@ -133,7 +133,8 @@ def to_str(average_ranks, groups, treatment_names, *, reverse_x=False, as_docume
             x_pos[i],
             y_pos[i],
             anchors[i],
-            reverse_x
+            reverse_x,
+            escape_underscore
         ))
     for i in range(len(groups)):
         commands.append(_group(
@@ -177,9 +178,11 @@ def _tikzpicture(*contents, options=[]):
     return _environment("tikzpicture", *contents, options=options)
 def _axis(*contents, options=[]):
     return _environment("axis", *contents, "", options=options)
-def _treatment(label, rank, xpos, ypos, anchor, reverse_x):
-    return f"\\draw[treatment line] ([yshift=-2pt] axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{_label(label)}}};"
-def _label(label):
-    return re.sub("(?<!\\\\)_", "\\\\_", label) # replace "_", but not "\_", with "\_"
+def _treatment(label, rank, xpos, ypos, anchor, reverse_x, escape_underscore):
+    return f"\\draw[treatment line] ([yshift=-2pt] axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{_label(label, escape_underscore)}}};"
+def _label(label, escape_underscore):
+    if escape_underscore:
+        return re.sub("(?<!\\\\)_", "\\\\_", label) # replace "_", but not "\_", with "\_"
+    return label
 def _group(minrank, maxrank, ypos):
     return f"\\draw[group line] (axis cs:{minrank}, {-ypos}) -- (axis cs:{maxrank}, {-ypos});"

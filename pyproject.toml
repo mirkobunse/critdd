@@ -1,0 +1,48 @@
+[build-system]
+requires = [ "setuptools >= 61.0" ]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "critdd"
+description = "Critical difference diagrams with Python and Tikz"
+dependencies = [
+    "numpy",
+    "scipy",
+    "networkx",
+]
+requires-python = ">= 3.8"
+keywords = [
+    "machine learning",
+    "benchmark",
+    "hypothesis testing",
+    "post-hoc analysis",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Text Processing :: Markup :: LaTeX",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+readme = "README.md"
+authors = [
+    { name = "Mirko Bunse", email = "mirko.bunse@cs.tu-dortmund.de"},
+]
+dynamic = [ "version" ]
+
+[project.optional-dependencies]
+tests = [ "pandas" ]
+docs = [ "myst-parser", "sphinx-rtd-theme" ]
+
+[tool.setuptools.dynamic]
+version = { attr = "critdd.__version__" }
+
+[project.urls]
+Documentation = "https://mirkobunse.github.io/critdd"
+Repository = "https://github.com/mirkobunse/critdd"
+Issues = "https://github.com/mirkobunse/critdd/issues"

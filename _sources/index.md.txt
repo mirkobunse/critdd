@@ -25,6 +25,7 @@ Critical difference (CD) diagrams are a powerful tool to compare outcomes of mul
 ## Installation
 
 ```
+pip install --upgrade pip setuptools wheel
 pip install 'critdd @ git+https://github.com/mirkobunse/critdd'
 ```
 
@@ -32,12 +33,6 @@ pip install 'critdd @ git+https://github.com/mirkobunse/critdd'
 
 ```
 pip install --force-reinstall --no-deps 'critdd @ git+https://github.com/mirkobunse/critdd@main'
-```
-
-**Troubleshooting:** Starting from `pip 23.1.2`, you have to install `setuptools` and `wheel` explicitly. If you receive a "NameError: name 'setuptools' is not defined", you need to execute the following command before installing `critdd`.
-
-```
-pip install --upgrade pip setuptools wheel
 ```
 
 

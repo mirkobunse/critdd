@@ -2,7 +2,7 @@
 
 ## Regular CD diagrams
 
-A regular CD diagram with ``n`` observations and ``k`` treatments is created from an ``(n, k)``-shaped matrix, as described in the [](../index.md) section.
+A regular CD diagram with ``n`` observations and ``k`` treatments is created from an ``(n, k)``-shaped matrix, as described in the [](index.md) section.
 
 <img alt="example.svg" src="example.svg" width="480">
 

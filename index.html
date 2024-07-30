@@ -86,15 +86,12 @@
 <a class="reference internal image-reference" href="_images/2d_example.svg"><img alt="2d_example.svg" src="_images/2d_example.svg" style="width: 480px;" /></a>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="s1">&#39;critdd @ git+https://github.com/mirkobunse/critdd&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span> <span class="n">setuptools</span> <span class="n">wheel</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="s1">&#39;critdd @ git+https://github.com/mirkobunse/critdd&#39;</span>
 </pre></div>
 </div>
 <p><strong>Updating:</strong> To update an existing installation of <code class="docutils literal notranslate"><span class="pre">critdd</span></code>, run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">force</span><span class="o">-</span><span class="n">reinstall</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">deps</span> <span class="s1">&#39;critdd @ git+https://github.com/mirkobunse/critdd@main&#39;</span>
-</pre></div>
-</div>
-<p><strong>Troubleshooting:</strong> Starting from <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">23.1.2</span></code>, you have to install <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> and <code class="docutils literal notranslate"><span class="pre">wheel</span></code> explicitly. If you receive a “NameError: name ‘setuptools’ is not defined”, you need to execute the following command before installing <code class="docutils literal notranslate"><span class="pre">critdd</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span> <span class="n">setuptools</span> <span class="n">wheel</span>
 </pre></div>
 </div>
 </section>

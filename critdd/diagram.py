@@ -109,6 +109,7 @@ class Diagram(AbstractDiagram):
                 np.logical_or(r_min >= r_min[i], r_max < r_max[i])
             ))
         groups = [ g for (g, i) in zip(groups, is_maximal) if i ] # remove non-maximal groups
+        groups = [ np.array(g) for g in set(tuple(g) for g in groups) ] # remove duplicates
         if not return_singletons:
             groups = list(filter(lambda g: len(g) > 1, groups))
         if return_names:

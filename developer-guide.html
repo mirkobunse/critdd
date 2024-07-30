@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -15,9 +15,9 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f6245a2f"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -79,10 +79,10 @@
            <div itemprop="articleBody">
              
   <section id="developer-guide">
-<h1>Developer guide<a class="headerlink" href="#developer-guide" title="Permalink to this heading"></a></h1>
+<h1>Developer guide<a class="headerlink" href="#developer-guide" title="Link to this heading"></a></h1>
 <p>Before you push to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch, please test the code and the documentation locally.</p>
 <section id="unit-testing">
-<h2>Unit testing<a class="headerlink" href="#unit-testing" title="Permalink to this heading"></a></h2>
+<h2>Unit testing<a class="headerlink" href="#unit-testing" title="Link to this heading"></a></h2>
 <p>Run tests locally with the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> package.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
 venv/bin/pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>setuptools<span class="w"> </span>wheel
@@ -93,13 +93,11 @@ venv/bin/python<span class="w"> </span>-m<span class="w"> </span>unittest
 <p>As soon as you push to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch, GitHub Actions will take out these unit tests, too.</p>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
 <p>After locally building the documentation, open <code class="docutils literal notranslate"><span class="pre">docs/build/index.html</span></code> in your browser.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>.<span class="w"> </span>venv/bin/activate
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>docs<span class="o">]</span>
-<span class="nb">cd</span><span class="w"> </span>docs/
-sphinx-apidoc<span class="w"> </span>--force<span class="w"> </span>--output-dir<span class="w"> </span>source/<span class="w"> </span>../critdd
-make<span class="w"> </span>html
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>venv/bin/pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>docs<span class="o">]</span>
+venv/bin/sphinx-apidoc<span class="w"> </span>--force<span class="w"> </span>--output-dir<span class="w"> </span>docs/source<span class="w"> </span>critdd
+venv/bin/sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span>docs/source<span class="w"> </span>docs/build
 </pre></div>
 </div>
 <p>As soon as you push to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch, GitHub Actions will build the documentation, push it to the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch, and publish the result on GitHub Pages: <a class="reference external" href="https://mirkobunse.github.io/critdd">https://mirkobunse.github.io/critdd</a></p>

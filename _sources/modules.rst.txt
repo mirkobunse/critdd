@@ -1,0 +1,7 @@
+critdd
+======
+
+.. toctree::
+   :maxdepth: 4
+
+   critdd

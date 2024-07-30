@@ -21,11 +21,9 @@ As soon as you push to the `main` branch, GitHub Actions will take out these uni
 After locally building the documentation, open `docs/build/index.html` in your browser.
 
 ```bash
-. venv/bin/activate
-pip install -e .[docs]
-cd docs/
-sphinx-apidoc --force --output-dir source/ ../critdd
-make html
+venv/bin/pip install -e .[docs]
+venv/bin/sphinx-apidoc --force --output-dir docs/source critdd
+venv/bin/sphinx-build -M html docs/source docs/build
 ```
 
 As soon as you push to the `main` branch, GitHub Actions will build the documentation, push it to the `gh-pages` branch, and publish the result on GitHub Pages: [https://mirkobunse.github.io/critdd](https://mirkobunse.github.io/critdd)

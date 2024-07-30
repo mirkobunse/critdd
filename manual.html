@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -15,9 +15,9 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f6245a2f"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -83,29 +83,29 @@
            <div itemprop="articleBody">
              
   <section id="manual">
-<h1>Manual<a class="headerlink" href="#manual" title="Permalink to this heading"></a></h1>
+<h1>Manual<a class="headerlink" href="#manual" title="Link to this heading"></a></h1>
 <p>This manual provides you with more background information on CD diagrams.</p>
 <section id="reading-a-cd-diagram">
-<h2>Reading a CD diagram<a class="headerlink" href="#reading-a-cd-diagram" title="Permalink to this heading"></a></h2>
+<h2>Reading a CD diagram<a class="headerlink" href="#reading-a-cd-diagram" title="Link to this heading"></a></h2>
 <p>Let’s take a look at the treatments <code class="docutils literal notranslate"><span class="pre">clf1</span></code> to <code class="docutils literal notranslate"><span class="pre">clf5</span></code>. Their position represents their mean ranks across all outcomes of the observations, where low ranks indicate that a treatment wins more often than its competitors with higher ranks. Two or more treatments are connected with each other if we can not tell their outcomes apart, in the sense of statistical significance. For the above example, we can not tell from the data whether <code class="docutils literal notranslate"><span class="pre">clf3</span></code> and <code class="docutils literal notranslate"><span class="pre">clf5</span></code> are actually different from each other. We can tell, however, that both of them are different from all of the other treatments. This example above is adapted from <a class="reference external" href="https://github.com/hfawaz/cd-diagram">github.com/hfawaz/cd-diagram</a>.</p>
-<a class="reference internal image-reference" href="_images/example.svg"><img alt="example.svg" src="_images/example.svg" width="480" /></a>
+<a class="reference internal image-reference" href="_images/example.svg"><img alt="example.svg" src="_images/example.svg" style="width: 480px;" /></a>
 </section>
 <section id="hypothesis-testing">
-<h2>Hypothesis testing<a class="headerlink" href="#hypothesis-testing" title="Permalink to this heading"></a></h2>
+<h2>Hypothesis testing<a class="headerlink" href="#hypothesis-testing" title="Link to this heading"></a></h2>
 <p>A diagram like the one above concisely represents multiple hypothesis tests that are conducted over the observed outcomes. Before anything is plotted at all, the <em>Friedman test</em> tells us whether there are significant differences at all. If this test fails, we have not sufficient data to tell any of the treatments apart and we must abort. If, however, the test sucessfully rejects this possibility we can proceed with the post-hoc analysis. In this second step, a <em>Wilcoxon signed-rank test</em> tells us whether each pair of treatments exhibits a significant difference.</p>
 </section>
 <section id="multiple-testing">
-<h2>Multiple testing<a class="headerlink" href="#multiple-testing" title="Permalink to this heading"></a></h2>
+<h2>Multiple testing<a class="headerlink" href="#multiple-testing" title="Link to this heading"></a></h2>
 <p>Since we are testing multiple hypotheses, we must <em>adjust</em> the Wilcoxon test with Holm’s method or with Bonferroni’s method. For each group of treatments which we can not distinguish from the Holm-adjusted (or Bonferroni-adjusted) Wilcoxon test, we add a thick line to the diagram.</p>
 <p>Whether we choose Holm’s method or Bonferroni’s method for the adjustment depends on our personal requirements. Holm’s method has the advantage of a greater statistical power than Bonferroni’s method, i.e., this adjustment is capable of rejecting more null hypotheses that indeed should be rejected. However, its disadvantage is that the rejection of each null hypothesis depends on the outcome of other null hypotheses. If this property is not desired, one should instead use Bonferroni’s method, which ensures that each pair-wise hypothesis test is independent from all others.</p>
 </section>
 <section id="cautions">
-<h2>Cautions<a class="headerlink" href="#cautions" title="Permalink to this heading"></a></h2>
+<h2>Cautions<a class="headerlink" href="#cautions" title="Link to this heading"></a></h2>
 <p>The hypothesis tests underneath the CD diagram do not account for variances of the outcomes. It is therefore important that these outcomes are <em>reliable</em> in the sense that each of them is obtained from a sufficiently large sample. Ideally, they come from a cross validation or from a repeated stratified split. Moreover, all treatments must have been evaluated on the same set of observations.</p>
 <p>The adjustments by Holm and Bonferroni can lead to different indistinguishable groups. For more information, see the <a class="reference internal" href="#multiple-testing">Multiple testing</a> section above.</p>
 </section>
 <section id="citing">
-<h2>Citing<a class="headerlink" href="#citing" title="Permalink to this heading"></a></h2>
+<h2>Citing<a class="headerlink" href="#citing" title="Link to this heading"></a></h2>
 <p>CD diagrams have originally been proposed in the following article:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">demsar2006statistical</span><span class="p">,</span>
   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Statistical</span> <span class="n">comparisons</span> <span class="n">of</span> <span class="n">classifiers</span> <span class="n">over</span> <span class="n">multiple</span> <span class="n">data</span> <span class="n">sets</span><span class="p">},</span>

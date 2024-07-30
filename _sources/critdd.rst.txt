@@ -1,0 +1,53 @@
+critdd package
+==============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   critdd.tests
+
+Submodules
+----------
+
+critdd.diagram module
+---------------------
+
+.. automodule:: critdd.diagram
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+critdd.stats module
+-------------------
+
+.. automodule:: critdd.stats
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+critdd.tikz module
+------------------
+
+.. automodule:: critdd.tikz
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+critdd.tikz\_2d module
+----------------------
+
+.. automodule:: critdd.tikz_2d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: critdd
+   :members:
+   :undoc-members:
+   :show-inheritance:

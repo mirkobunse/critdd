@@ -1,0 +1,45 @@
+critdd.tests package
+====================
+
+Submodules
+----------
+
+critdd.tests.readme module
+--------------------------
+
+.. automodule:: critdd.tests.readme
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+critdd.tests.stats module
+-------------------------
+
+.. automodule:: critdd.tests.stats
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+critdd.tests.tikz module
+------------------------
+
+.. automodule:: critdd.tests.tikz
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+critdd.tests.two\_d module
+--------------------------
+
+.. automodule:: critdd.tests.two_d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: critdd.tests
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -28,7 +28,7 @@ class Test2d(TestCase):
     self.assertTrue(["clf3", "clf5"] in groups)
 
     # check the tikz export
-    output_path = "__2d_example__.pdf"
+    output_path = "__unittest__/two_d.pdf"
     if os.path.exists(output_path):
       os.remove(output_path) # make sure the file does not exist already
     diagrams.to_file(

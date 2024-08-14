@@ -27,7 +27,7 @@ class TestReadMe(TestCase):
     self.assertTrue(["clf3", "clf5"] in groups)
 
     # check the tikz export
-    output_path = "__example__.pdf"
+    output_path = "__unittest__/readme.pdf"
     if os.path.exists(output_path):
       os.remove(output_path) # make sure the file does not exist already
     diagram.to_file(

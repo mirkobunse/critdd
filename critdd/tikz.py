@@ -39,16 +39,26 @@ def _merge_dicts(a, b):
 def to_file(path, tikz_code):
     """Export the tikz_code to a file."""
     root, ext = os.path.splitext(path)
+    root_dir = os.path.dirname(root)
     if ext not in [ ".tex", ".tikz", ".pdf", ".svg", ".png" ]:
         raise ValueError("Unknown file path extension")
     if ext in [ ".pdf", ".svg", ".png" ]:
         path = root + ".tex"
+    if root_dir != "": # ensure that the root directory exists
+        if not os.path.isdir(root_dir):
+            os.makedirs(root_dir)
     with open(path, "w") as f: # store the Tikz code in a .tex or .tikz file
         f.write(tikz_code)
     if ext in [ ".tex", ".tikz" ]:
         return None # we are done here
     pdflatex = subprocess.Popen(
-        ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", path],
+        [
+            "pdflatex",
+            "-interaction=nonstopmode",
+            "-halt-on-error",
+            f"-output-directory={root_dir}",
+            path
+        ],
         stdout = subprocess.PIPE
     )
     (out, err) = pdflatex.communicate() # convert to PDF

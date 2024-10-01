@@ -185,7 +185,7 @@ def _treatment(label, rank, xpos, ypos, anchor, reverse_x):
     return f"\\draw[treatment line] ([yshift=-2pt] axis cs:{rank}, 0) |- (axis cs:{xpos}, {-ypos})\n  node[treatment label, anchor={anchor}] {{{_label(label)}}};"
 def _label(label):
     parts = []
-    for i, part in enumerate(re.split("\$", label)): # split on equation boundaries
+    for i, part in enumerate(re.split("\\$", label)): # split on equation boundaries
         if i % 2 == 0: # if the current part is outside of an equation
             parts.append(re.sub("(?<!\\\\)_", "\\\\_", part)) # { "_", "\_" } -> "\_"
         else:

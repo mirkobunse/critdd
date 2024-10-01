@@ -14,8 +14,8 @@ jobs:
     strategy:
       matrix:
         python-version:
-        - "3.8" # oldest version; end of live in October 2024
-        - "3.11"
+        - "3.9" # oldest version; end of live in October 2025
+        - "3.12"
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
